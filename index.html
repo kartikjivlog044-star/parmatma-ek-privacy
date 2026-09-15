@@ -1,0 +1,3734 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>परमात्मा एक</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: Arial, "Noto Sans Devanagari", sans-serif;
+    }
+
+    /* =========================
+       SPLASH SCREEN
+       ========================= */
+
+    #splashScreen {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background: linear-gradient(
+        180deg,
+        #ed1261 0%,
+        #ff382e 50%,
+        #ff4b17 100%
+      );
+
+      animation: backgroundChange 2s ease-in-out forwards;
+
+      z-index: 99999;
+    }
+
+    .splashContent {
+      width: 100%;
+      text-align: center;
+      padding: 20px;
+      color: white;
+    }
+
+    /* मुख्य नाम */
+
+    .appTitle {
+      font-size: clamp(42px, 11vw, 72px);
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 28px;
+
+      animation: titleFade 1s ease-out;
+    }
+
+    /* दूसरा टेक्स्ट */
+
+    .appSubtitle {
+      font-size: clamp(20px, 5.5vw, 32px);
+      font-weight: 500;
+      line-height: 1.5;
+
+      animation: subtitleFade 1.2s ease-out;
+    }
+
+    /* तीसरा टेक्स्ट */
+
+    .appTagline {
+      margin-top: 22px;
+
+      font-size: clamp(17px, 4.5vw, 25px);
+      font-style: italic;
+      line-height: 1.6;
+
+      opacity: 0.92;
+
+      animation: subtitleFade 1.5s ease-out;
+    }
+
+    /* Loading circle */
+
+    .loader {
+      width: 82px;
+      height: 82px;
+
+      margin: 70px auto 0;
+
+      border-radius: 50%;
+
+      border: 8px solid rgba(255, 255, 255, 0.25);
+      border-top-color: white;
+
+      animation:
+        spin 1s linear infinite,
+        loaderFade 1s ease-out;
+    }
+
+    /* =========================
+       ANIMATIONS
+       ========================= */
+
+    @keyframes backgroundChange {
+      0% {
+        background: linear-gradient(
+          180deg,
+          #e91661,
+          #ff303c,
+          #ff4918
+        );
+      }
+
+      50% {
+        background: linear-gradient(
+          180deg,
+          #8e2de2,
+          #ff416c,
+          #ff512f
+        );
+      }
+
+      100% {
+        background: linear-gradient(
+          180deg,
+          #ff512f,
+          #f12711,
+          #ff4b17
+        );
+      }
+    }
+
+    @keyframes titleFade {
+      from {
+        opacity: 0;
+        transform: scale(0.85);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes subtitleFade {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes loaderFade {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+<script>
+/* =====================================================
+   PARAMATMA EK - ADMOB / WEB INTO APK CONFIG
+   Native WebView wrapper can read this configuration.
+   ===================================================== */
+window.PARMATMA_ADMOB = {
+  appId: "ca-app-pub-6419463741612138~550573785",
+  bannerAdUnitId: "ca-app-pub-6419463741612138/7635602924",
+  interstitialAdUnitId: "ca-app-pub-6419463741612138/2779851745"
+};
+/* The HTML cannot load the native AdMob SDK by itself.
+   A Web-to-APK wrapper must connect these IDs to the Google Mobile Ads SDK.
+   These hooks are intentionally harmless in a normal browser/Acode preview. */
+window.parmatmaShowInterstitial = function(){
+  try {
+    if (window.AndroidAdMob && typeof window.AndroidAdMob.showInterstitial === "function") {
+      window.AndroidAdMob.showInterstitial(); return true;
+    }
+    if (window.Android && typeof window.Android.showInterstitialAd === "function") {
+      window.Android.showInterstitialAd(); return true;
+    }
+  } catch(e) { console.warn("AdMob bridge error", e); }
+  return false;
+};
+</script>
+
+<style id="parmatma-final-fixes">
+  /* No hard-coded date/calendar badge in the discussion/havan header. */
+  #schedulePanel .schedule-calendar-date,
+  #schedulePanel .schedule-date-badge,
+  #schedulePanel .schedule-header-date { display:none !important; }
+  #parmatmaNativeBannerHook{display:none !important;}
+</style>
+
+<style id="pin-auth-css">
+#pinAuthCard .pinPhotoPick{border:1.5px dashed #c8b9e8;border-radius:16px;padding:12px;background:#faf8ff;text-align:center}
+#pinAuthCard #pinProfilePhoto{border:0;padding:7px;font-size:14px;background:transparent}
+#pinAuthCard .pinPhotoHint{font-size:13px;color:#6b5b85;margin-top:2px}
+#pinPhotoPreview{width:82px;height:82px;border-radius:50%;object-fit:cover;margin:10px auto 2px;border:3px solid #eee}
+.postDeleteBtn,.mainPostDelete,.pe-btn-delete{border:1px solid #c62828!important;border-radius:10px!important;background:linear-gradient(180deg,#fff7f7,#ffe8e8)!important;color:#a61b1b!important;padding:9px 14px!important;font-size:14px!important;font-weight:800!important;box-shadow:0 2px 6px rgba(130,20,20,.12)!important}
+.postDeleteBtn:hover,.mainPostDelete:hover,.pe-btn-delete:hover{background:#ffe0e0!important;transform:translateY(-1px)}
+.postDeleteBtn:active,.mainPostDelete:active,.pe-btn-delete:active{transform:translateY(0)}
+
+</style>
+
+</head>
+
+<body data-admob-app-id="ca-app-pub-6419463741612138~550573785" data-admob-banner-id="ca-app-pub-6419463741612138/7635602924" data-admob-interstitial-id="ca-app-pub-6419463741612138/2779851745">
+<div id="parmatmaNativeBannerHook" aria-hidden="true"></div>
+
+  <!-- =========================
+       PARAMATMA EK SPLASH SCREEN
+       ========================= -->
+
+  <div id="splashScreen">
+
+    <div class="splashContent">
+
+      <div class="appTitle">
+        परमात्मा एक
+      </div>
+
+      <div class="appSubtitle">
+        परम पूज्य परमात्मा एक सेवक मंडल
+      </div>
+
+      <div class="appTagline">
+        मानव धर्म - सत्य, मर्यादा, प्रेम, निष्कपट भाव
+      </div>
+
+      <div class="loader"></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       आगे Registration Screen
+       Part 2 में आएगी
+       ========================= -->
+
+
+  <script>
+
+    /*
+      Splash Screen लगभग 2 सेकंड बाद हटेगी।
+
+      अभी Registration Screen नहीं बनाई गई है,
+      इसलिए फिलहाल Splash Screen के बाद
+      सफेद खाली स्क्रीन आएगी।
+
+      Part 2 में इसी जगह Registration Form आएगा।
+    */
+
+    setTimeout(function () {
+
+      const splash = document.getElementById("splashScreen");
+
+      splash.style.opacity = "0";
+      splash.style.transition = "opacity 0.4s ease";
+
+      setTimeout(function () {
+        splash.style.display = "none";
+      }, 400);
+
+    }, 2000);
+
+  </script>
+
+
+
+<script id="parmatma-admob-hooks">
+(function(){
+  var last=0;
+  window.maybeShowParmatmaInterstitial=function(){
+    var now=Date.now();
+    if(now-last < 240000) return false;
+    last=now;
+    return !!(window.parmatmaShowInterstitial && window.parmatmaShowInterstitial());
+  };
+})();
+</script>
+
+
+<style>
+.peMainAuthor{display:flex;gap:10px;align-items:center;margin:8px 0 12px}.peMainAuthor img{width:52px;height:52px;border-radius:50%;object-fit:cover}.peMainAuthorName{font-weight:900;font-size:18px}.peMainAuthorRole{font-size:13px;font-weight:800;color:#6b38cf;margin-top:2px}
+</style>
+
+<!-- =========================================================
+     PARMATMA EK V2 FEATURE LAYER
+     Adds: My Profile, Login/Register, Edit Profile,
+     Sevak Directory, Guide assignment, author identity on posts,
+     schedules, notifications UI, and role-aware controls.
+     Native Android permissions + native AdMob SDK still belong
+     in the Android wrapper/project.
+     ========================================================= -->
+<style>
+#peV2Root{position:fixed;inset:0;z-index:2000000;background:#f5f7fb;display:none;overflow:auto;font-family:Arial,"Noto Sans Devanagari",sans-serif;color:#171717}
+#peV2Root *{box-sizing:border-box}
+.peTop{position:sticky;top:0;z-index:20;color:#fff;padding:14px 16px;background:linear-gradient(135deg,#ff3d57,#8b35ff,#00a9e8);display:flex;align-items:center;gap:12px;box-shadow:0 3px 14px rgba(0,0,0,.16)}
+.peBack{width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:28px}
+.peTitle{font-size:21px;font-weight:900;flex:1}
+.peWrap{max-width:760px;margin:auto;padding:16px 14px 100px}
+.peCard{background:#fff;border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.peHero{background:linear-gradient(135deg,#ed0f8c,#5c42ff,#00a9ee);color:#fff;border-radius:24px;padding:22px 18px;text-align:center}
+.peAvatar{width:92px;height:92px;border-radius:50%;object-fit:cover;background:#e9eef5;border:4px solid #fff;box-shadow:0 5px 18px rgba(0,0,0,.18)}
+.peName{font-size:24px;font-weight:900;margin-top:10px}
+.peBadge{display:inline-block;padding:7px 12px;border-radius:999px;background:#fff;color:#5c35c8;font-weight:900;font-size:13px;margin-top:7px}
+.peGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.peTile{border:0;border-radius:20px;padding:20px 10px;font-size:17px;font-weight:900;min-height:105px;box-shadow:0 3px 12px rgba(0,0,0,.07);background:#fff}
+.peTile b{display:block;font-size:31px;margin-bottom:7px}
+.peBtn{border:0;border-radius:14px;padding:13px 16px;font-size:16px;font-weight:900;cursor:pointer}
+.pePrimary{background:#ff5722;color:#fff}.peGreen{background:#4caf50;color:#fff}.peBlue{background:#2196f3;color:#fff}.peGray{background:#eee;color:#222}.peDanger{background:#ffe3e3;color:#c62828}
+.peInput,.peArea,.peSelect{width:100%;border:1px solid #ddd;border-radius:13px;padding:13px;font-size:17px;margin-top:7px;outline:none;font-family:inherit;background:#fff}
+.peArea{min-height:110px;resize:vertical}
+.peLabel{font-weight:800;margin-top:12px;display:block}
+.peRow{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.peUser{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid #eee}
+.peUser:last-child{border-bottom:0}
+.peSmallAvatar{width:58px;height:58px;border-radius:50%;object-fit:cover;background:#e9eef5}
+.peUserMain{min-width:0}.peUser > .peRow{grid-column:1 / -1}.peUserName{font-size:18px;font-weight:900}.peMeta{font-size:13px;color:#666;margin-top:3px}
+.pePostHead{display:flex;gap:11px;align-items:center;margin-bottom:10px}
+.pePostHead img{width:52px;height:52px;border-radius:50%;object-fit:cover;background:#eee}
+.pePostAuthor{font-weight:900;font-size:17px}.pePostRole{font-size:13px;font-weight:800;color:#6b38cf}
+.pePostText{font-size:18px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.pePostImg{width:100%;max-height:430px;object-fit:contain;border-radius:16px;margin-top:10px;background:#f2f2f2}
+.peEmpty{text-align:center;color:#777;padding:25px}
+.peNotice{background:#fff8dc;border:1px solid #f0d36d;border-radius:14px;padding:12px;font-size:14px;line-height:1.55}
+.peCheck{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-size:16px;line-height:1.5}
+@media(max-width:430px){.peGrid{gap:9px}.peTile{padding:15px 8px;font-size:15px}}
+</style>
+
+<script type="module">
+(async function(){
+  const FB="https://www.gstatic.com/firebasejs/12.18.0/";
+  const [{initializeApp,getApps,getApp},{getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,setPersistence,browserLocalPersistence},{getFirestore,collection,query,where,getDocs,getDoc,doc,setDoc,updateDoc,addDoc,serverTimestamp,orderBy,limit,onSnapshot,deleteDoc}] = await Promise.all([
+    import(FB+"firebase-app.js"), import(FB+"firebase-auth.js"), import(FB+"firebase-firestore.js")
+  ]);
+  const firebaseConfig={
+    apiKey:"AIzaSyCOWrCyxMdLoevvOPyuXL6V3DP0mMfo5fU",
+    authDomain:"parmatma-ek-e561d.firebaseapp.com",
+    projectId:"parmatma-ek-e561d",
+    storageBucket:"parmatma-ek-e561d.firebasestorage.app",
+    messagingSenderId:"477168010558",
+    appId:"1:477168010558:web:ae27b57110a6fc1ff1586f",
+    measurementId:"G-CJTPB27P1B"
+  };
+  const app=getApps().length?getApp():initializeApp(firebaseConfig);
+  const auth=getAuth(app),db=getFirestore(app);
+  try{ await setPersistence(auth,browserLocalPersistence); }catch(e){ console.warn("Auth persistence:",e); }
+  let currentUser=null,currentProfile=null,stopPosts=null;
+
+  const root=document.createElement("div");root.id="peV2Root";document.body.appendChild(root);
+
+  const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+  const avatar=u=>u?.profilePhotoURL||u?.profilePhotoData||u?.profilePhotoLocal||"data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="100%" height="100%" fill="#e9eef5"/><circle cx="60" cy="42" r="24" fill="#1976d2"/><path d="M22 112c5-31 71-31 76 0" fill="#1976d2"/></svg>');
+  const roleLabel=r=>r==="margdarshak"?"👑 मार्गदर्शक":r==="sevak"?"👥 सेवक":r==="admin"?"🛡️ Admin":"👤 सदस्य";
+
+  async function findProfile(uid){
+    if(!uid)return null;
+    try{
+      const direct=await getDoc(doc(db,"users",uid));
+      if(direct.exists())return {id:direct.id,...direct.data()};
+      const s=await getDocs(query(collection(db,"users"),where("uid","==",uid),limit(1)));
+      if(!s.empty)return {id:s.docs[0].id,...s.docs[0].data()};
+    }catch(e){console.warn("profile read",e)}
+    return null;
+  }
+  async function ensureProfile(){
+    const storedUid=localStorage.getItem("parmatmaEkAuthUid");
+    if(!currentUser && !storedUid)return null;
+    currentProfile=await findProfile(currentUser?.uid||storedUid);
+    if(!currentProfile){
+      currentProfile={uid:currentUser.uid,name:currentUser.displayName||"",mobile:"",language:"हिंदी",district:"",cityVillage:"",profilePhotoURL:"",profilePhotoData:"",role:"user",createdAt:serverTimestamp()};
+    }
+    return currentProfile;
+  }
+  function show(html,title="परमात्मा एक"){
+    root.innerHTML=`<div class="peTop"><button class="peBack" id="peBack">‹</button><div class="peTitle">${title}</div></div><div class="peWrap">${html}</div>`;
+    root.style.display="block"; document.body.style.overflow="hidden";
+    document.getElementById("peBack").onclick=()=>close();
+  }
+  function close(){root.style.display="none";root.innerHTML="";document.body.style.overflow="";if(stopPosts){stopPosts();stopPosts=null}}
+
+  async function openProfile(){
+    const p=await ensureProfile();
+    show(`<div class="peHero"><img class="peAvatar" src="${avatar(p)}"><div class="peName">${esc(p.name||"मेरा प्रोफाइल")}</div><div class="peBadge">${roleLabel(p.role)}</div></div>
+    <div class="peCard"><div class="peRow"><button class="peBtn pePrimary" id="peEdit">✏️ Edit Profile</button><button class="peBtn peGray" id="peLogout">🚪 Logout</button></div>
+    <p style="margin-top:15px;line-height:1.8"><b>📱 मोबाइल:</b> ${esc(p.mobile||"—")}<br><b>🌐 भाषा:</b> ${esc(p.language||"—")}<br><b>📍 जिला:</b> ${esc(p.district||"—")}<br><b>🏠 शहर/गाँव:</b> ${esc(p.cityVillage||"—")}<br><b>🆔 User ID:</b> ${esc(p.uid||"—")}</p></div>`);
+    document.getElementById("peEdit").onclick=openEditProfile;
+    document.getElementById("peLogout").onclick=async()=>{sessionStorage.removeItem("parmatmaEkSession");await signOut(auth);alert("Logout हो गया।");close();if(window.parmatmaSetLoggedOut)window.parmatmaSetLoggedOut();};
+  }
+
+  async function compressProfileImage(file){return new Promise((resolve,reject)=>{const im=new Image();const fr=new FileReader();fr.onload=()=>{im.onload=()=>{const max=900,scale=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*scale));c.height=Math.max(1,Math.round(im.height*scale));const x=c.getContext("2d");x.drawImage(im,0,0,c.width,c.height);c.toBlob(b=>b?resolve(b):reject(Error("फोटो तैयार नहीं हुई")),"image/jpeg",.82)};im.onerror=()=>reject(Error("फोटो पढ़ी नहीं गई"));im.src=fr.result};fr.onerror=reject;fr.readAsDataURL(file)})}
+  async function imageToDataURL(file,max=512,quality=.65){const blob=await new Promise((resolve,reject)=>{const im=new Image(),fr=new FileReader();fr.onload=()=>{im.onload=()=>{const sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));const x=c.getContext("2d");x.drawImage(im,0,0,c.width,c.height);c.toBlob(b=>b?resolve(b):reject(Error("फोटो तैयार नहीं हुई")),"image/jpeg",quality)};im.onerror=()=>reject(Error("फोटो पढ़ी नहीं गई"));im.src=fr.result};fr.onerror=reject;fr.readAsDataURL(file)});if(blob.size>700000)throw Error("फोटो बहुत बड़ी है। कृपया छोटी फोटो चुनें।");return await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(blob)})}
+  async function openEditProfile(){
+    const p=await ensureProfile();
+    show(`<div class="peCard">
+      <label class="peLabel">📷 Profile Photo<input class="peInput" id="pePhoto" type="file" accept="image/*"></label>
+      <img id="pePreview" class="peAvatar" style="margin-top:10px" src="${avatar(p)}">
+      <label class="peLabel">पूरा नाम<input class="peInput" id="peName" value="${esc(p.name)}"></label>
+      <label class="peLabel">मोबाइल नंबर<input class="peInput" id="peMobile" inputmode="numeric" maxlength="10" value="${esc(p.mobile)}"></label>
+      <label class="peLabel">भाषा<select class="peSelect" id="peLang"><option ${p.language==="हिंदी"?"selected":""}>हिंदी</option><option ${p.language==="मराठी"?"selected":""}>मराठी</option></select></label>
+      <label class="peLabel">जिला<input class="peInput" id="peDistrict" value="${esc(p.district)}"></label>
+      <label class="peLabel">शहर / गाँव<input class="peInput" id="peCity" value="${esc(p.cityVillage)}"></label>
+      <button class="peBtn peGreen" id="peSave" style="width:100%;margin-top:15px">💾 प्रोफाइल सेव करें</button>
+    </div>`);
+    const fi=document.getElementById("pePhoto");
+    fi.onchange=()=>{const f=fi.files?.[0];if(f){const r=new FileReader();r.onload=e=>document.getElementById("pePreview").src=e.target.result;r.readAsDataURL(f)}};
+    document.getElementById("peSave").onclick=async()=>{
+      const btn=document.getElementById("peSave");btn.disabled=true;btn.textContent="⏳ सेव हो रहा है...";
+      try{
+        let photoURL=p.profilePhotoURL||"";
+        const f=fi.files?.[0];
+        if(f){if(!f.type.startsWith("image/"))throw Error("केवल फोटो चुनें");if(f.size>5*1024*1024)throw Error("फोटो 5 MB से कम रखें");photoURL=await imageToDataURL(f,512,.65)}
+        const data={uid:currentUser.uid,name:document.getElementById("peName").value.trim(),mobile:document.getElementById("peMobile").value.trim(),language:document.getElementById("peLang").value,district:document.getElementById("peDistrict").value.trim(),cityVillage:document.getElementById("peCity").value.trim(),profilePhotoURL:photoURL,profilePhotoData:photoURL,updatedAt:serverTimestamp()};
+        if(p.id)await updateDoc(doc(db,"users",p.id),data);else{await setDoc(doc(db,"users",currentUser.uid),{...data,role:"user",createdAt:serverTimestamp()})}
+        currentProfile={...p,...data,id:p.id||currentUser.uid};
+        const top=document.getElementById("pmProfilePhoto");if(top){top.innerHTML=avatar(currentProfile).startsWith("data:")?"👤":`<img src="${currentProfile.profilePhotoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;}
+        toast("✅ प्रोफाइल अपडेट हो गया।");openProfile();
+      }catch(e){alert("❌ प्रोफाइल सेव नहीं हुआ\n\n"+e.message);btn.disabled=false;btn.textContent="💾 प्रोफाइल सेव करें"}
+    };
+  }
+
+  function openLogin(){
+    show(`<div class="peCard"><h2>🔐 Login</h2><label class="peLabel">Email<input class="peInput" id="peEmail" type="email" placeholder="आपका Email"></label><label class="peLabel">Password<input class="peInput" id="pePass" type="password" placeholder="Password"></label><button class="peBtn pePrimary" id="peLogin" style="width:100%;margin-top:15px">🔑 Login करें</button><hr style="margin:18px 0;border:0;border-top:1px solid #eee"><h3>📝 नया Account</h3><label class="peLabel">पूरा नाम<input class="peInput" id="peRegName"></label><button class="peBtn peGreen" id="peRegister" style="width:100%;margin-top:12px">✨ Account बनाएं</button><div class="peNotice" style="margin-top:14px">Email/Password provider Firebase Console में Enable होना जरूरी है।</div></div>`);
+    document.getElementById("peLogin").onclick=async()=>{try{await signInWithEmailAndPassword(auth,document.getElementById("peEmail").value.trim(),document.getElementById("pePass").value);alert("✅ Login सफल");close();}catch(e){alert("❌ Login नहीं हुआ\n\n"+e.message)}};
+    document.getElementById("peRegister").onclick=async()=>{try{const email=document.getElementById("peEmail").value.trim(),pass=document.getElementById("pePass").value,name=document.getElementById("peRegName").value.trim();if(!email||pass.length<6||!name)throw Error("नाम, Email और कम से कम 6 अक्षरों का Password भरें");const c=await createUserWithEmailAndPassword(auth,email,pass);await setDoc(doc(db,"users",c.user.uid),{uid:c.user.uid,name,mobile:"",language:"हिंदी",district:"",cityVillage:"",profilePhotoURL:"",profilePhotoData:"",role:"user",createdAt:serverTimestamp()});alert("🎉 Account बन गया");close();}catch(e){alert("❌ Account नहीं बना\n\n"+e.message)}};
+  }
+
+  async function loadUsers(){const s=await getDocs(collection(db,"users"));return s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>{const aa=a.createdAt?.seconds||0,bb=b.createdAt?.seconds||0;return bb-aa})}
+  async function openSevakDirectory(){
+    show(`<div class="peCard"><div class="peNotice">🔐 Admin/अधिकृत व्यक्ति यहाँ से पहले User को <b>सेवक</b> नियुक्त करेगा। केवल नियुक्त सेवक को आगे <b>मार्गदर्शक</b> बनाया जा सकेगा।</div><div id="peUsers"><div class="peEmpty">⏳ Users लोड हो रहे हैं...</div></div></div>`,"👥 सेवक निर्देशिका");
+    watchSevakDirectory();
+    try{
+      const users=await loadUsers(),box=document.getElementById("peUsers");box.innerHTML="";
+      if(!users.length){box.innerHTML='<div class="peEmpty">कोई User नहीं मिला।</div>';return}
+      users.forEach(u=>{
+        const card=document.createElement("div");card.className="peUser";
+        card.innerHTML=`<img class="peSmallAvatar" src="${avatar(u)}"><div class="peUserMain"><div class="peUserName">${esc(u.name||"नाम नहीं")} ${u.role==="margdarshak"?"👑":u.role==="sevak"?"👥":""}</div><div class="peMeta">${esc(u.district||"")} • ${esc(u.cityVillage||"")}<br>${roleLabel(u.role)}</div></div><div class="peRow"></div>`;
+        const actions=card.querySelector(".peRow");
+        if(u.role!=="sevak"&&u.role!=="margdarshak")addAction(actions,"👥 सेवक बनाएं",()=>assignRole(u,"sevak"));
+        if(u.role==="sevak")addAction(actions,"👑 मार्गदर्शक बनाएं",()=>assignRole(u,"margdarshak"));
+        if(u.role==="sevak"||u.role==="margdarshak")addAction(actions,"↩️ User करें",()=>assignRole(u,"user"));
+        box.appendChild(card);
+      });
+    }catch(e){document.getElementById("peUsers").innerHTML=`<div class="peEmpty">❌ Firebase से Users नहीं लोड हुए<br><br>${esc(e.message)}</div>`}
+  }
+  function addAction(parent,text,fn){const b=document.createElement("button");b.className="peBtn peGray";b.textContent=text;b.onclick=fn;parent.appendChild(b)}
+
+// Sevak Directory realtime sync: every newly registered user appears automatically.
+let __sevakUsersUnsub=null;
+function watchSevakDirectory(){
+  if(__sevakUsersUnsub) __sevakUsersUnsub();
+  const box=document.getElementById("peUsers"); if(!box) return;
+  __sevakUsersUnsub=onSnapshot(collection(db,"users"),snap=>{
+    const users=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+    box.innerHTML="";
+    if(!users.length){box.innerHTML='<div class="peEmpty">अभी कोई Registered User नहीं है।</div>';return;}
+    users.forEach(u=>{
+      const card=document.createElement("div");card.className="peUser";
+      card.innerHTML=`<img class="peSmallAvatar" src="${avatar(u)}"><div class="peUserMain"><div class="peUserName">${esc(u.name||"नाम नहीं")} ${u.role==="margdarshak"?"👑":u.role==="sevak"?"👥":""}</div><div class="peMeta">${esc(u.district||"")} • ${esc(u.cityVillage||"")}<br>${roleLabel(u.role)}</div></div><div class="peRow"></div>`;
+      const actions=card.querySelector(".peRow");
+      if(u.role!=="sevak"&&u.role!=="margdarshak")addAction(actions,"👥 सेवक बनाएं",()=>assignRole(u,"sevak"));
+      if(u.role==="sevak")addAction(actions,"👑 मार्गदर्शक बनाएं",()=>assignRole(u,"margdarshak"));
+      if(u.role==="sevak"||u.role==="margdarshak")addAction(actions,"↩️ User करें",()=>assignRole(u,"user"));
+      box.appendChild(card);
+    });
+  },err=>{box.innerHTML=`<div class="peEmpty">❌ Firebase से Users नहीं लोड हुए<br><br>${esc(err.message||err)}</div>`;});
+}
+  async function assignRole(u,role){
+    const pin=prompt("🔐 Admin Password डालें:");
+    if(pin!=="4351"){if(pin!==null)alert("❌ गलत Password");return}
+    if(role==="margdarshak"&&u.role!=="sevak"){alert("पहले इस व्यक्ति को सेवक निर्देशिका से सेवक नियुक्त करें।");return}
+    if(!confirm((u.name||"User")+" को "+roleLabel(role)+" बनाना है?"))return;
+    try{await updateDoc(doc(db,"users",u.id),{role,guideApproved:role==="margdarshak",guideApprovedAt:role==="margdarshak"?serverTimestamp():null});alert("✅ Role अपडेट हो गया");openSevakDirectory()}catch(e){alert("❌ Role update नहीं हुआ\n\n"+e.message)}
+  }
+
+  async function openGuides(){
+    show(`<div class="peCard"><h2>👑 मार्गदर्शक मंडल</h2><div class="peNotice">यहाँ केवल वही सदस्य आएँगे जिन्हें <b>सेवक निर्देशिका</b> से मार्गदर्शक नियुक्त किया गया है।</div><div id="peGuides" style="margin-top:10px"><div class="peEmpty">⏳ लोड हो रहा है...</div></div></div>`,"👑 मार्गदर्शक मंडल");
+    try{const users=await loadUsers(),gs=users.filter(u=>u.role==="margdarshak"),box=document.getElementById("peGuides");box.innerHTML=gs.length?"":"<div class='peEmpty'>अभी कोई मार्गदर्शक नियुक्त नहीं है।</div>";gs.forEach(u=>{const c=document.createElement("div");c.className="peUser";c.innerHTML=`<img class="peSmallAvatar" src="${avatar(u)}"><div class="peUserMain"><div class="peUserName">${esc(u.name)}</div><div class="peMeta">👑 मार्गदर्शक<br>📍 ${esc(u.district||"")} • ${esc(u.cityVillage||"")}</div></div>`;box.appendChild(c)})}catch(e){document.getElementById("peGuides").innerHTML="❌ "+esc(e.message)}
+  }
+
+  async function openPostsV2(){
+    show(`<div class="peCard"><textarea class="peArea" id="pePostText" placeholder="अपना सुविचार, संदेश या सूचना लिखें..."></textarea><input class="peInput" id="pePostImg" type="file" accept="image/*"><button class="peBtn pePrimary" id="pePostSend" style="width:100%;margin-top:12px">📤 पोस्ट करें</button></div><h2 style="margin:16px 3px 8px">📢 सभी पोस्ट</h2><div id="pePosts"><div class="peEmpty">⏳ पोस्ट लोड हो रही हैं...</div></div>`,"✍️ पोस्ट / सुविचार");
+    await refreshPostsV2();
+  }
+  async function refreshPostsV2(){
+    const box=document.getElementById("pePosts");if(!box)return;
+    try{
+      const q=query(collection(db,"posts"),orderBy("createdAtMs","desc"),limit(50));
+      if(stopPosts)stopPosts();
+      stopPosts=onSnapshot(q,async snap=>{
+        const arr=snap.docs.map(d=>({id:d.id,...d.data()}));box.innerHTML="";
+        if(!arr.length){box.innerHTML='<div class="peEmpty">अभी कोई पोस्ट नहीं है।</div>';return}
+        const profiles={};
+        await Promise.all(arr.map(async x=>{if(x.authorUid)profiles[x.authorUid]=await findProfile(x.authorUid)}));
+        arr.forEach(d=>{
+          const u=profiles[d.authorUid]||{name:d.authorName||"परमात्मा एक सदस्य",role:d.authorRole||"user",profilePhotoURL:d.authorPhotoURL||""};
+          const c=document.createElement("div");c.className="peCard";
+          c.innerHTML=`<div class="pePostHead"><img src="${avatar(u)}"><div><div class="pePostAuthor">${esc(u.name||"नाम उपलब्ध नहीं")}</div><div class="pePostRole">${roleLabel(u.role)}</div></div></div><div class="pePostText">${esc(d.text||"")}</div>${(d.imageURL||d.imageData)?`<img class="pePostImg" src="${esc(d.imageURL||d.imageData)}">`:""}<div class="peMeta" style="margin-top:9px">📅 ${d.createdAtMs?new Date(d.createdAtMs).toLocaleString("hi-IN"):"अभी"}</div>`;
+          if(d.authorUid===currentUser?.uid){const del=document.createElement("button");del.className="peBtn peDanger";del.style.marginTop="10px";del.textContent="🗑️ मेरी पोस्ट Delete";del.onclick=async()=>{del.disabled=true;del.textContent="⏳ Delete हो रही है...";try{await deleteDoc(doc(db,"posts",d.id));toast("✅ आपकी पोस्ट Delete हो गई।")}catch(e){del.disabled=false;del.textContent="🗑️ मेरी पोस्ट Delete";toast("❌ पोस्ट Delete नहीं हुई: "+(e?.message||"त्रुटि"))}};c.appendChild(del)}
+          box.appendChild(c);
+        });
+      });
+    }catch(e){box.innerHTML=`<div class="peEmpty">❌ ${esc(e.message)}</div>`}
+  }
+  async function sendPost(){
+    const text=document.getElementById("pePostText").value.trim(),fi=document.getElementById("pePostImg"),file=fi.files?.[0];
+    if(!text&&!file){alert("कुछ लिखें या फोटो चुनें");return}
+    const p=await ensureProfile(),btn=document.getElementById("pePostSend");btn.disabled=true;btn.textContent="⏳ पोस्ट हो रही है...";
+    try{
+      let imageURL="";
+      if(file){
+        if(!file.type.startsWith("image/"))throw Error("केवल फोटो चुनें");
+        if(file.size>8*1024*1024)throw Error("पोस्ट फोटो 8 MB से कम रखें");
+        imageURL=await imageToDataURL(file,640,.62);
+        if(imageURL.length>950000)throw Error("पोस्ट फोटो बहुत बड़ी है। कृपया छोटी फोटो चुनें");
+      }
+      await addDoc(collection(db,"posts"),{text,imageURL:"",imageData:imageURL,authorUid:currentUser.uid,authorName:p?.name||currentUser.email||"सदस्य",authorRole:p?.role||"user",authorPhotoURL:p?.profilePhotoURL||p?.profilePhotoData||"",createdAt:serverTimestamp(),createdAtMs:Date.now()});
+      document.getElementById("pePostText").value="";fi.value="";alert("✅ पोस्ट हो गई");
+    }catch(e){alert("❌ पोस्ट नहीं हुई\n\n"+e.message)}finally{btn.disabled=false;btn.textContent="📤 पोस्ट करें"}
+  }
+
+  function openSimple(title,content){show(`<div class="peCard">${content}</div>`,title)}
+  function openSchedules(type){
+    if(typeof window.openSchedulePanel === "function"){
+      close();
+      window.openSchedulePanel(type==="charcha"?"discussion":"havan");
+    } else {
+      const t=type==="charcha"?"🤝 चर्चा बैठक शेड्यूल":"🔥 हवन शेड्यूल";
+      openSimple(t,`<h2>${t}</h2><div class="peNotice">Firebase schedule system लोड नहीं हुआ।</div>`);
+    }
+  }
+  function openSankalp(){ if(window.__peOpenSankalpFinal){close();window.__peOpenSankalpFinal()} else openSimple("🙏 आज का संकल्प","मानव धर्म के सत्य, मर्यादा और प्रेम के मार्ग पर चलने का संकल्प लें।") }
+  function openRulesV2(){ if(window.__peOpenRulesFinal){close();window.__peOpenRulesFinal()} else openSimple("📜 नियम","सत्य बोलना • मर्यादा पालना • प्रेम से व्यवहार करना"); }
+
+  function hookUI(){
+    document.addEventListener("click",e=>{
+      const el=e.target.closest&&e.target.closest("#parmatmaMainMenu, #pmProfilePhoto, #pmPlusButton, #pmMargdarshak, #pmSevak, #pmCharcha, #pmHavan, #pmSankalpButton, #pePostSend");
+      if(!el)return;
+      const u=auth.currentUser;
+      const login=()=>{ if(window.parmatmaEmailLogin) window.parmatmaEmailLogin(); else openLogin(); };
+
+      const profile=e.target.closest("#pmProfilePhoto");
+      if(profile){ e.preventDefault(); e.stopImmediatePropagation();
+        if(window.parmatmaOpenProfileV11) window.parmatmaOpenProfileV11();
+        else if(u&&!u.isAnonymous) openProfile(); else login();
+        return;
+      }
+      const plus=e.target.closest("#pmPlusButton");
+      if(plus){ e.preventDefault(); e.stopImmediatePropagation();
+        if(u&&!u.isAnonymous) openPostsV2(); else login();
+        return;
+      }
+      const card=e.target.closest("#pmMargdarshak");
+      if(card){ e.preventDefault(); e.stopImmediatePropagation();
+        if(u&&!u.isAnonymous) openGuides(); else login();
+        return;
+      }
+      const sev=e.target.closest("#pmSevak");
+      if(sev){ e.preventDefault(); e.stopImmediatePropagation();
+        if(u&&!u.isAnonymous) openSevakDirectory(); else login();
+        return;
+      }
+      const ch=e.target.closest("#pmCharcha");
+      if(ch){ e.preventDefault(); e.stopImmediatePropagation();
+        if(u&&!u.isAnonymous) openSchedules("charcha"); else login();
+        return;
+      }
+      const hv=e.target.closest("#pmHavan");
+      if(hv){ e.preventDefault(); e.stopImmediatePropagation();
+        if(u&&!u.isAnonymous) openSchedules("havan"); else login();
+        return;
+      }
+      const sank=e.target.closest("#pmSankalpButton");
+      if(sank){ e.preventDefault(); e.stopImmediatePropagation(); openSankalp(); return; }
+      const rules=e.target.closest("#parmatmaMainMenu .pm-bottom-nav .pm-nav-item");
+      if(rules && (rules.innerText||"").includes("नियम")){ e.preventDefault(); e.stopImmediatePropagation(); openRulesV2(); return; }
+      const post=e.target.closest("#pePostSend");
+      if(post){ e.preventDefault(); e.stopImmediatePropagation(); if(u&&!u.isAnonymous) sendPost(); else login(); return; }
+    },true);
+  }
+
+  onAuthStateChanged(auth,async u=>{
+    currentUser=u;
+    if(u) await ensureProfile();
+  });
+  hookUI();
+  // If the existing app uses anonymous auth, profile icon still opens My Profile.
+  window.parmatmaV2={openProfile,openLogin,openSevakDirectory,openGuides,openPostsV2};
+})();
+</script>
+
+<!-- =====================================================
+     PARAMATMA EK - PART 2
+     REGISTRATION SCREEN
+     ===================================================== -->
+
+<script>
+
+(function () {
+
+  /* ===============================
+     REGISTRATION CSS
+     =============================== */
+
+  const registrationStyle = document.createElement("style");
+
+  registrationStyle.innerHTML = `
+
+    #registrationScreen {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      background: #f5f7fb;
+      z-index: 99998;
+      display: none;
+      font-family: Arial, "Noto Sans Devanagari", sans-serif;
+    }
+
+    .registerTop {
+      background: linear-gradient(135deg, #ff512f, #dd2476);
+      color: white;
+      padding: 28px 20px 35px;
+      text-align: center;
+      border-radius: 0 0 30px 30px;
+    }
+
+    .registerTop h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .registerTop p {
+      font-size: 16px;
+      opacity: 0.95;
+    }
+
+    .registerBox {
+      width: calc(100% - 30px);
+      max-width: 500px;
+      margin: -20px auto 30px;
+      background: white;
+      border-radius: 24px;
+      padding: 25px 20px 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+    }
+
+    /* PROFILE PHOTO */
+
+    .profileSection {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .profilePhoto {
+      width: 115px;
+      height: 115px;
+      border-radius: 50%;
+      margin: auto;
+
+      background: #eeeeee;
+
+      border: 5px solid white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.18);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+      cursor: pointer;
+
+      position: relative;
+    }
+
+    .profilePhoto span {
+      font-size: 55px;
+    }
+
+    .profilePhoto img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .cameraBadge {
+      position: absolute;
+      right: 2px;
+      bottom: 2px;
+
+      width: 34px;
+      height: 34px;
+
+      background: #ff3d00;
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 18px;
+    }
+
+    .profileText {
+      margin-top: 10px;
+      color: #555;
+      font-size: 15px;
+    }
+
+    #profileInput {
+      display: none;
+    }
+
+    /* FORM */
+
+    .formGroup {
+      margin-bottom: 18px;
+    }
+
+    .formGroup label {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 7px;
+    }
+
+    .formInput,
+    .formSelect {
+      width: 100%;
+      height: 52px;
+
+      border: 1.5px solid #dddddd;
+      border-radius: 13px;
+
+      padding: 0 15px;
+
+      font-size: 16px;
+      outline: none;
+
+      background: #fafafa;
+    }
+
+    .formInput:focus,
+    .formSelect:focus {
+      border-color: #ff3d68;
+      background: white;
+    }
+
+    /* LANGUAGE */
+
+    .languageButtons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .languageButton {
+      flex: 1;
+
+      height: 50px;
+
+      border: 2px solid #dddddd;
+      border-radius: 12px;
+
+      background: white;
+
+      font-size: 16px;
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    .languageButton.active {
+      background: #ff3d68;
+      color: white;
+      border-color: #ff3d68;
+    }
+
+    /* CONTINUE BUTTON */
+
+    .continueButton {
+      width: 100%;
+      height: 55px;
+
+      margin-top: 10px;
+
+      border: none;
+      border-radius: 15px;
+
+      background: linear-gradient(135deg, #ff512f, #dd2476);
+
+      color: white;
+
+      font-size: 18px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      box-shadow: 0 6px 15px rgba(221,36,118,0.25);
+    }
+
+    .continueButton:active {
+      transform: scale(0.98);
+    }
+
+    .required {
+      color: red;
+    }
+
+    .smallNote {
+      text-align: center;
+      margin-top: 15px;
+      color: #777;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+  `;
+
+  document.head.appendChild(registrationStyle);
+
+
+  /* ===============================
+     REGISTRATION HTML
+     =============================== */
+
+  const registrationHTML = `
+
+    <div id="registrationScreen">
+
+      <div class="registerTop">
+
+        <h1>परमात्मा एक</h1>
+
+        <p>
+          सेवक मंडल में आपका स्वागत है 🙏
+        </p>
+
+      </div>
+
+
+      <div class="registerBox">
+
+
+        <!-- PROFILE PHOTO -->
+
+        <div class="profileSection">
+
+          <div
+            class="profilePhoto"
+            id="profilePhotoButton"
+          >
+
+            <span id="profileEmoji">
+              👤
+            </span>
+
+            <img
+              id="profilePreview"
+              alt="Profile Photo"
+            >
+
+            <div class="cameraBadge">
+              📷
+            </div>
+
+          </div>
+
+
+          <div class="profileText">
+            प्रोफाइल फोटो चुनें
+          </div>
+
+
+          <input
+            type="file"
+            id="profileInput"
+            accept="image/*"
+          >
+
+        </div>
+
+
+        <!-- NAME -->
+
+        <div class="formGroup">
+
+          <label>
+            पूरा नाम <span class="required">*</span>
+          </label>
+
+          <input
+            type="text"
+            id="fullName"
+            class="formInput"
+            placeholder="अपना पूरा नाम लिखें"
+            autocomplete="name"
+          >
+
+        </div>
+
+
+        <!-- MOBILE -->
+
+        <div class="formGroup">
+
+          <label>
+            मोबाइल नंबर <span class="required">*</span>
+          </label>
+
+          <input
+            type="tel"
+            id="mobileNumber"
+            class="formInput"
+            placeholder="10 अंकों का मोबाइल नंबर"
+            maxlength="10"
+            inputmode="numeric"
+          >
+
+        </div>
+
+
+        <!-- LANGUAGE -->
+
+        <div class="formGroup">
+
+          <label>
+            भाषा चुनें <span class="required">*</span>
+          </label>
+
+          <div class="languageButtons">
+
+            <button
+              type="button"
+              class="languageButton active"
+              data-language="हिंदी"
+            >
+              हिंदी
+            </button>
+
+            <button
+              type="button"
+              class="languageButton"
+              data-language="मराठी"
+            >
+              मराठी
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- DISTRICT -->
+
+        <div class="formGroup">
+
+          <label>
+            जिला <span class="required">*</span>
+          </label>
+
+          <input
+            type="text"
+            id="district"
+            class="formInput"
+            placeholder="अपना जिला लिखें"
+          >
+
+        </div>
+
+
+        <!-- CITY / VILLAGE -->
+
+        <div class="formGroup">
+
+          <label>
+            शहर / गाँव <span class="required">*</span>
+          </label>
+
+          <input
+            type="text"
+            id="cityVillage"
+            class="formInput"
+            placeholder="शहर या गाँव का नाम"
+          >
+
+        </div>
+
+
+        <!-- CONTINUE -->
+
+        <button
+          type="button"
+          id="continueRegistration"
+          class="continueButton"
+        >
+          आगे बढ़ें →
+        </button>
+
+
+        <div class="smallNote">
+          आपकी जानकारी सुरक्षित रूप से सेव की जाएगी 🙏
+        </div>
+
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  /* ===============================
+     SCREEN CREATE
+     =============================== */
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    registrationHTML
+  );
+
+
+  /* ===============================
+     PROFILE PHOTO
+     =============================== */
+
+  const profileButton =
+    document.getElementById("profilePhotoButton");
+
+  const profileInput =
+    document.getElementById("profileInput");
+
+  const profilePreview =
+    document.getElementById("profilePreview");
+
+  const profileEmoji =
+    document.getElementById("profileEmoji");
+
+
+  profileButton.addEventListener("click", function () {
+
+    profileInput.click();
+
+  });
+
+
+  profileInput.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+
+      alert("कृपया फोटो चुनें।");
+
+      return;
+    }
+
+
+    const reader = new FileReader();
+
+
+    reader.onload = function (event) {
+
+      profilePreview.src =
+        event.target.result;
+
+      profilePreview.style.display =
+        "block";
+
+      profileEmoji.style.display =
+        "none";
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+  });
+
+
+  /* ===============================
+     LANGUAGE SELECT
+     =============================== */
+
+  let selectedLanguage = "हिंदी";
+
+
+  const languageButtons =
+    document.querySelectorAll(".languageButton");
+
+
+  languageButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+      languageButtons.forEach(function (btn) {
+
+        btn.classList.remove("active");
+
+      });
+
+
+      this.classList.add("active");
+
+
+      selectedLanguage =
+        this.getAttribute("data-language");
+
+    });
+
+  });
+
+
+  /* ===============================
+     MOBILE NUMBER
+     =============================== */
+
+  const mobileInput =
+    document.getElementById("mobileNumber");
+
+
+  mobileInput.addEventListener("input", function () {
+
+    this.value =
+      this.value.replace(/[^0-9]/g, "");
+
+  });
+
+
+  /* ===============================
+     CONTINUE BUTTON
+     =============================== */
+
+  document
+    .getElementById("continueRegistration")
+    .addEventListener("click", function () {
+
+
+      const fullName =
+        document.getElementById("fullName")
+        .value
+        .trim();
+
+
+      const mobile =
+        document.getElementById("mobileNumber")
+        .value
+        .trim();
+
+
+      const district =
+        document.getElementById("district")
+        .value
+        .trim();
+
+
+      const cityVillage =
+        document.getElementById("cityVillage")
+        .value
+        .trim();
+
+
+      /* VALIDATION */
+
+
+      if (!fullName) {
+
+        alert("कृपया अपना पूरा नाम लिखें।");
+
+        document
+          .getElementById("fullName")
+          .focus();
+
+        return;
+
+      }
+
+
+      if (mobile.length !== 10) {
+
+        alert("कृपया सही 10 अंकों का मोबाइल नंबर डालें।");
+
+        mobileInput.focus();
+
+        return;
+
+      }
+
+
+      if (!district) {
+
+        alert("कृपया अपना जिला लिखें।");
+
+        document
+          .getElementById("district")
+          .focus();
+
+        return;
+
+      }
+
+
+      if (!cityVillage) {
+
+        alert("कृपया शहर या गाँव का नाम लिखें।");
+
+        document
+          .getElementById("cityVillage")
+          .focus();
+
+        return;
+
+      }
+
+
+      /* अभी Firebase में save नहीं होगा */
+
+      alert(
+        "Registration की जानकारी तैयार है।\n\n" +
+        "नाम: " + fullName + "\n" +
+        "मोबाइल: " + mobile + "\n" +
+        "भाषा: " + selectedLanguage + "\n" +
+        "जिला: " + district + "\n" +
+        "शहर/गाँव: " + cityVillage
+      );
+
+
+      console.log("Registration Data:", {
+
+        name: fullName,
+        mobile: mobile,
+        language: selectedLanguage,
+        district: district,
+        cityVillage: cityVillage
+
+      });
+
+    });
+
+
+  /* ===============================
+     SPLASH के बाद REGISTRATION SHOW
+     =============================== */
+
+  setTimeout(function () {
+
+    const registration =
+      document.getElementById(
+        "registrationScreen"
+      );
+
+
+    if (registration) {
+
+      registration.style.display =
+        "block";
+
+    }
+
+  }, 2450);
+
+
+})();
+
+</script>
+<!-- =====================================================
+     PARAMATMA EK - PART 3
+     FIREBASE CONNECTION + FIRESTORE + STORAGE
+     ===================================================== -->
+
+<!-- DISABLED LEGACY DUPLICATE SCRIPT: consolidated in V9 -->
+<!-- ================================
+     PART 4
+     FIRESTORE + DASHBOARD
+     NO OTP / NO STORAGE
+================================ -->
+
+<!-- DISABLED LEGACY DUPLICATE SCRIPT: consolidated in V9 -->
+<!-- ================================
+     PART 5
+     ऊपर का ॐ हटाना
+================================ -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  // ऊपर वाले ॐ को हटाने के लिए
+  const allElements = document.querySelectorAll("*");
+
+  allElements.forEach(function (el) {
+
+    if (el.children.length === 0) {
+
+      const text = el.textContent.trim();
+
+      if (text === "ॐ") {
+        el.remove();
+      }
+
+    }
+
+  });
+
+});
+
+</script>
+<script>
+
+setTimeout(function () {
+
+  document.querySelectorAll("img").forEach(function (img) {
+
+    const alt = (img.alt || "").toLowerCase();
+
+    if (
+      alt.includes("om") ||
+      alt.includes("aum") ||
+      alt.includes("ॐ")
+    ) {
+      img.style.display = "none";
+    }
+
+  });
+
+}, 500);
+
+</script>
+<!-- =========================================
+     PART 6
+     Registration सिर्फ पहली बार दिखेगा
+========================================= -->
+
+<script>
+
+(function () {
+
+  const REGISTERED_KEY = "parmatmaEk_registered";
+
+  // -----------------------------------------
+  // अगर पहले से registration हो चुका है
+  // तो Registration Screen तुरंत छिपाओ
+  // -----------------------------------------
+  function checkRegistration() {
+
+    if (localStorage.getItem(REGISTERED_KEY) === "yes") {
+
+      const registration = document.getElementById("registrationScreen");
+
+      if (registration) {
+        registration.style.display = "none";
+      }
+
+    }
+
+  }
+
+  // Page खुलते ही check
+  checkRegistration();
+
+  // थोड़ी देर बाद भी check
+  setTimeout(checkRegistration, 500);
+  setTimeout(checkRegistration, 1500);
+  setTimeout(checkRegistration, 3000);
+
+
+  // -----------------------------------------
+  // Registration सफल होने पर याद रखो
+  // -----------------------------------------
+  const observer = new MutationObserver(function () {
+
+    const button = document.getElementById("continueRegistration");
+
+    if (button) {
+
+      const text = button.innerText || "";
+
+      if (
+        text.includes("Registration सफल") ||
+        text.includes("सफल")
+      ) {
+
+        localStorage.setItem(
+          REGISTERED_KEY,
+          "yes"
+        );
+
+        const registration =
+          document.getElementById("registrationScreen");
+
+        if (registration) {
+          registration.style.display = "none";
+        }
+
+      }
+
+    }
+
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+
+
+  // -----------------------------------------
+  // Registration button पर नजर रखो
+  // -----------------------------------------
+  document.addEventListener("click", function (e) {
+
+    if (
+      e.target &&
+      e.target.id === "continueRegistration"
+    ) {
+
+      setTimeout(function () {
+
+        const button =
+          document.getElementById("continueRegistration");
+
+        if (button) {
+
+          const text = button.innerText || "";
+
+          if (
+            text.includes("Registration सफल") ||
+            text.includes("सफल")
+          ) {
+
+            localStorage.setItem(
+              REGISTERED_KEY,
+              "yes"
+            );
+
+          }
+
+        }
+
+      }, 2000);
+
+    }
+
+  }, true);
+
+})();
+
+              </script>
+              <!-- =========================================
+     PART 7
+     पुराने Registered User को पहचानना
+========================================= -->
+
+<script type="module">
+
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+import { initializeApp, getApps } 
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+
+// Firebase Config
+const firebaseConfig = {
+  apiKey: "AIzaSyCOWrCyxMdLoevvOPyuXL6V3DP0mMfo5fU",
+  authDomain: "parmatma-ek-e561d.firebaseapp.com",
+  projectId: "parmatma-ek-e561d",
+  storageBucket: "parmatma-ek-e561d.firebasestorage.app",
+  messagingSenderId: "477168010558",
+  appId: "1:477168010558:web:ae27b57110a6fc1ff1586f",
+  measurementId: "G-CJTPB27P1B"
+};
+
+
+// Firebase दोबारा initialize न हो
+const app = getApps().length
+  ? getApps()[0]
+  : initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+// -----------------------------------------
+// Registration Screen छिपाने का function
+// -----------------------------------------
+function openHome() {
+
+  const registration =
+    document.getElementById("registrationScreen");
+
+  if (registration) {
+    registration.style.display = "none";
+  }
+
+  // आगे से Registration नहीं दिखेगा
+  localStorage.setItem(
+    "parmatmaEk_registered",
+    "yes"
+  );
+
+}
+
+
+// -----------------------------------------
+// Firebase User check
+// -----------------------------------------
+onAuthStateChanged(auth, async function(user) {
+
+  if (!user) return;
+
+  try {
+
+    // इस Firebase UID का profile खोजो
+    const q = query(
+      collection(db, "users"),
+      where("uid", "==", user.uid)
+    );
+
+    const result = await getDocs(q);
+
+    // अगर Firebase में profile पहले से है
+    if (!result.empty) {
+
+      console.log(
+        "पुराना Registration मिला ✅"
+      );
+
+      openHome();
+
+    }
+
+  } catch (error) {
+
+    console.log(
+      "Existing user check:",
+      error
+    );
+
+  }
+
+});
+
+      </script>
+      <!-- =========================================
+     PART 8
+     परमात्मा एक - MAIN MENU
+========================================= -->
+
+<script>
+
+(function () {
+
+  // -----------------------------------------
+  // MAIN MENU HTML
+  // -----------------------------------------
+
+  const mainMenu = document.createElement("div");
+
+  mainMenu.id = "parmatmaMainMenu";
+
+  mainMenu.innerHTML = `
+
+    <!-- TOP HEADER -->
+    <div class="pm-top-header">
+
+      <div class="pm-title">
+        Parmatma ek
+      </div>
+
+      <div class="pm-profile">
+        <span>👤</span>
+      </div>
+
+    </div>
+
+
+    <!-- PAGE -->
+    <div class="pm-page">
+
+
+      <!-- MAIN GRADIENT BOX -->
+      <div class="pm-guru-box">
+
+        <div class="pm-guru-line">
+          भगवान बाबा हनुमान जी को प्रणाम
+        </div>
+
+        <div class="pm-guru-line">
+          महान त्यागी बाबा जुमदेव जी को प्रणाम
+        </div>
+
+        <div class="pm-parmatma">
+          परमात्मा एक
+        </div>
+
+      </div>
+
+
+
+      <!-- FOUR MENU BOXES -->
+      <div class="pm-menu-grid">
+
+
+        <!-- 1 -->
+        <div class="pm-menu-box pm-box-1">
+
+          <div class="pm-icon">👑</div>
+
+          <div class="pm-box-title">
+            मार्गदर्शक मंडल
+          </div>
+
+        </div>
+
+
+        <!-- 2 -->
+        <div class="pm-menu-box pm-box-2">
+
+          <div class="pm-icon">🤝</div>
+
+          <div class="pm-box-title">
+            चर्चा बैठक शेड्यूल
+          </div>
+
+        </div>
+
+
+        <!-- 3 -->
+        <div class="pm-menu-box pm-box-3">
+
+          <div class="pm-icon">👥</div>
+
+          <div class="pm-box-title">
+            सेवक निर्देशिका
+          </div>
+
+        </div>
+
+
+        <!-- 4 -->
+        <div class="pm-menu-box pm-box-4">
+
+          <div class="pm-icon">🔥</div>
+
+          <div class="pm-box-title">
+            हवन शेड्यूल
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- SANKALP -->
+      <button class="pm-sankalp" id="pmSankalpButton" type="button">
+        🙏 आज का संकल्प लें
+      </button>
+
+
+
+      <!-- DAILY POST TITLE -->
+      <div class="pm-post-heading">
+
+        दैनिक सेवक पोस्ट sandesh
+
+      </div>
+
+
+
+      <!-- DAILY POST -->
+      <div class="pm-post-card">
+
+        <div class="pm-post-title">
+          सेवक मंडल (नागपुर)
+        </div>
+
+        <div class="pm-post-tag">
+          👑 मार्गदर्शक
+        </div>
+
+        <div class="pm-post-text">
+
+          परम पूज्य बाबा जुमदेव जी के आशीर्वाद से
+          सत्य, मर्यादा व प्रेम का मार्ग अपनाएं।
+          परमात्मा एक!
+
+        </div>
+
+      </div>
+
+
+      <!-- EXTRA SPACE -->
+      <div class="pm-bottom-space"></div>
+
+
+    </div>
+
+
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="pm-bottom-nav">
+
+      <div class="pm-nav-item">
+
+        <div class="pm-nav-icon">🏠</div>
+
+        <div class="pm-nav-text">
+          होम
+        </div>
+
+      </div>
+
+
+      <div class="pm-plus-button">
+        +
+      </div>
+
+
+      <div class="pm-nav-item">
+
+        <div class="pm-nav-icon">📜</div>
+
+        <div class="pm-nav-text">
+          नियम
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  // -----------------------------------------
+  // CSS
+  // -----------------------------------------
+
+  const style = document.createElement("style");
+
+  style.innerHTML = `
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f4f5fa;
+      font-family: Arial, "Noto Sans Devanagari", sans-serif;
+    }
+
+
+    #parmatmaMainMenu {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      overflow-y: auto;
+      background: #f4f5fa;
+      color: #222;
+      padding-bottom: 90px;
+    }
+
+
+
+    /* ===============================
+       TOP HEADER
+    =============================== */
+
+    .pm-top-header {
+
+      height: 125px;
+
+      background: #171717;
+
+      color: white;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding: 30px 32px 25px;
+
+    }
+
+
+    .pm-title {
+
+      font-size: 44px;
+
+      font-weight: 700;
+
+      letter-spacing: -1px;
+
+    }
+
+
+    .pm-profile {
+
+      width: 85px;
+
+      height: 85px;
+
+      border-radius: 50%;
+
+      border: 3px solid white;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 42px;
+
+      background: #222;
+
+    }
+
+
+
+    /* ===============================
+       MAIN PAGE
+    =============================== */
+
+    .pm-page {
+
+      padding: 28px 25px 20px;
+
+    }
+
+
+
+    /* ===============================
+       PARMATMA BOX
+    =============================== */
+
+    .pm-guru-box {
+
+      min-height: 275px;
+
+      border-radius: 28px;
+
+      padding: 35px 20px;
+
+      text-align: center;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
+      box-shadow: 0 10px 25px rgba(0,0,0,.12);
+
+      animation: pmGradient 8s infinite alternate;
+
+      background:
+        linear-gradient(
+          120deg,
+          #c000ff,
+          #6d4cff,
+          #00bfff
+        );
+
+    }
+
+
+    @keyframes pmGradient {
+
+      0% {
+        background:
+          linear-gradient(
+            120deg,
+            #d000ff,
+            #7447ff,
+            #00bfff
+          );
+      }
+
+      25% {
+        background:
+          linear-gradient(
+            120deg,
+            #ff3cac,
+            #784ba0,
+            #2b86c5
+          );
+      }
+
+      50% {
+        background:
+          linear-gradient(
+            120deg,
+            #ff6a00,
+            #ee0979,
+            #6a11cb
+          );
+      }
+
+      75% {
+        background:
+          linear-gradient(
+            120deg,
+            #00c6ff,
+            #0072ff,
+            #7f00ff
+          );
+      }
+
+      100% {
+        background:
+          linear-gradient(
+            120deg,
+            #ff00cc,
+            #3333ff,
+            #00d4ff
+          );
+      }
+
+    }
+
+
+    .pm-guru-line {
+
+      font-size: 28px;
+
+      font-weight: 800;
+
+      color: #171717;
+
+      margin: 8px 0;
+
+    }
+
+
+    .pm-parmatma {
+
+      margin-top: 25px;
+
+      font-size: 52px;
+
+      font-weight: 900;
+
+      color: white;
+
+      text-shadow:
+        2px 2px 0 #ff00cc,
+        -2px -2px 0 #ffffff;
+
+    }
+
+
+
+    /* ===============================
+       FOUR BOXES
+    =============================== */
+
+    .pm-menu-grid {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 26px;
+
+      margin-top: 32px;
+
+    }
+
+
+    .pm-menu-box {
+
+      min-height: 225px;
+
+      border-radius: 28px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 20px;
+
+      box-shadow:
+        0 7px 18px rgba(0,0,0,.08);
+
+      transition: transform .2s;
+
+      animation: pmBoxColor 10s infinite alternate;
+
+    }
+
+
+    .pm-menu-box:active {
+
+      transform: scale(.96);
+
+    }
+
+
+    .pm-box-1 {
+
+      background: #fff0f3;
+
+      border: 2px solid #ffb5c2;
+
+    }
+
+
+    .pm-box-2 {
+
+      background: #edf5ff;
+
+      border: 2px solid #9fc9ff;
+
+    }
+
+
+    .pm-box-3 {
+
+      background: #effff5;
+
+      border: 2px solid #a8e6bf;
+
+    }
+
+
+    .pm-box-4 {
+
+      background: #fffbea;
+
+      border: 2px solid #ffe58a;
+
+    }
+
+
+    .pm-icon {
+
+      font-size: 65px;
+
+      margin-bottom: 18px;
+
+    }
+
+
+    .pm-box-title {
+
+      font-size: 28px;
+
+      font-weight: 800;
+
+      line-height: 1.3;
+
+    }
+
+
+
+    /* ===============================
+       SANKALP
+    =============================== */
+
+    .pm-sankalp {
+
+      margin-top: 32px;
+
+      min-height: 105px;
+
+      border-radius: 55px;
+
+      background: #4caf50;
+
+      color: white;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 20px;
+
+      font-size: 29px;
+
+      font-weight: 800;
+
+      box-shadow: 0 7px 18px rgba(76,175,80,.25);
+
+    }
+
+
+
+    /* ===============================
+       DAILY POST
+    =============================== */
+
+    .pm-post-heading {
+
+      font-size: 34px;
+
+      font-weight: 900;
+
+      margin:
+
+        38px 0
+
+        22px;
+
+    }
+
+
+    .pm-post-card {
+
+      background: white;
+
+      border-radius: 28px;
+
+      padding: 30px;
+
+      box-shadow:
+
+        0 7px 20px rgba(0,0,0,.08);
+
+    }
+
+
+    .pm-post-title {
+
+      font-size: 30px;
+
+      font-weight: 900;
+
+      margin-bottom: 20px;
+
+    }
+
+
+    .pm-post-tag {
+
+      display: inline-block;
+
+      background: #ff5b2e;
+
+      color: white;
+
+      padding: 12px 20px;
+
+      border-radius: 8px;
+
+      font-size: 21px;
+
+      font-weight: 800;
+
+      margin-bottom: 25px;
+
+    }
+
+
+    .pm-post-text {
+
+      font-size: 25px;
+
+      line-height: 1.7;
+
+      color: #555;
+
+    }
+
+
+
+    .pm-bottom-space {
+
+      height: 100px;
+
+    }
+
+
+
+    /* ===============================
+       BOTTOM NAV
+    =============================== */
+
+    .pm-bottom-nav {
+
+      position: fixed;
+
+      left: 0;
+
+      right: 0;
+
+      bottom: 0;
+
+      height: 110px;
+
+      background: white;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-around;
+
+      box-shadow:
+
+        0 -5px 20px rgba(0,0,0,.12);
+
+      z-index: 1000000;
+
+    }
+
+
+    .pm-nav-item {
+
+      width: 120px;
+
+      text-align: center;
+
+    }
+
+
+    .pm-nav-icon {
+
+      font-size: 42px;
+
+    }
+
+
+    .pm-nav-text {
+
+      font-size: 23px;
+
+      color: #555;
+
+      margin-top: 4px;
+
+    }
+
+
+    .pm-plus-button {
+
+      width: 82px;
+
+      height: 82px;
+
+      border-radius: 50%;
+
+      background: #11b9d4;
+
+      color: white;
+
+      border: 6px solid white;
+
+      box-shadow:
+
+        0 5px 20px rgba(0,180,210,.4);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 58px;
+
+      font-weight: 300;
+
+      margin-top: -45px;
+
+    }
+
+
+
+    /* ===============================
+       MOBILE
+    =============================== */
+
+    @media(max-width:600px) {
+
+      .pm-top-header {
+
+        height: 95px;
+
+        padding: 20px 22px;
+
+      }
+
+
+      .pm-title {
+
+        font-size: 28px;
+
+      }
+
+
+      .pm-profile {
+
+        width: 62px;
+
+        height: 62px;
+
+        font-size: 30px;
+
+      }
+
+
+      .pm-page {
+
+        padding: 22px 20px;
+
+      }
+
+
+      .pm-guru-box {
+
+        min-height: 235px;
+
+      }
+
+
+      .pm-guru-line {
+
+        font-size: 22px;
+
+      }
+
+
+      .pm-parmatma {
+
+        font-size: 43px;
+
+      }
+
+
+      .pm-menu-grid {
+
+        gap: 18px;
+
+      }
+
+
+      .pm-menu-box {
+
+        min-height: 180px;
+
+        border-radius: 23px;
+
+      }
+
+
+      .pm-icon {
+
+        font-size: 48px;
+
+      }
+
+
+      .pm-box-title {
+
+        font-size: 21px;
+
+      }
+
+
+      .pm-sankalp {
+
+        min-height: 82px;
+
+        font-size: 21px;
+
+      }
+
+
+      .pm-post-heading {
+
+        font-size: 27px;
+
+      }
+
+
+      .pm-post-title {
+
+        font-size: 24px;
+
+      }
+
+
+      .pm-post-text {
+
+        font-size: 20px;
+
+      }
+
+
+      .pm-bottom-nav {
+
+        height: 82px;
+
+      }
+
+
+      .pm-plus-button {
+
+        width: 68px;
+
+        height: 68px;
+
+        font-size: 46px;
+
+        margin-top: -35px;
+
+      }
+
+
+      .pm-nav-icon {
+
+        font-size: 30px;
+
+      }
+
+
+      .pm-nav-text {
+
+        font-size: 18px;
+
+      }
+
+    }
+
+  `;
+
+
+  document.head.appendChild(style);
+
+  document.body.appendChild(mainMenu);
+
+
+})();
+
+</script>
+<script>
+(function () {
+
+  /* ===============================
+     PARAMATMA EK - MAIN MENU
+     Splash के बाद यही खुलेगा
+     =============================== */
+
+  const oldMain = document.getElementById("parmatmaMainMenu");
+  if (oldMain) oldMain.remove();
+
+  const style = document.createElement("style");
+
+  style.innerHTML = `
+  #parmatmaMainMenu {
+    display:none;
+    min-height:100vh;
+    background:#f3f5fa;
+    font-family:Arial, "Noto Sans Devanagari", sans-serif;
+    padding-bottom:85px;
+    box-sizing:border-box;
+  }
+
+  /* ऊपर वाला Header */
+  .pm-top-header {
+    height:72px;
+    background:#171717;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 22px;
+    box-sizing:border-box;
+  }
+
+  .pm-title {
+    font-size:32px;
+    font-weight:700;
+  }
+
+  .pm-profile {
+    width:54px;
+    height:54px;
+    border:3px solid white;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    overflow:hidden;
+    background:#222;
+  }
+
+  .pm-profile img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  /* ऊपर का परमात्मा बॉक्स */
+  .pm-blessing {
+    margin:25px 25px 22px;
+    min-height:175px;
+    border-radius:25px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+
+    background:linear-gradient(
+      120deg,
+      #c500ff,
+      #744cff,
+      #00bde8
+    );
+
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+    animation:pmGradient 7s infinite alternate;
+  }
+
+  @keyframes pmGradient {
+    0% {
+      background:linear-gradient(120deg,#c500ff,#744cff,#00bde8);
+    }
+
+    50% {
+      background:linear-gradient(120deg,#ff00a8,#693cff,#00c6ff);
+    }
+
+    100% {
+      background:linear-gradient(120deg,#7b2cff,#008cff,#00d4c7);
+    }
+  }
+
+  .pm-blessing-line {
+    font-size:22px;
+    font-weight:700;
+    color:#17103d;
+    margin:5px 10px;
+  }
+
+  .pm-main-name {
+    margin-top:12px;
+    font-size:42px;
+    font-weight:900;
+    color:white;
+    -webkit-text-stroke:1px #ffebff;
+    text-shadow:2px 2px 4px rgba(0,0,0,.2);
+  }
+
+  /* चार बॉक्स */
+  .pm-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    padding:0 25px;
+  }
+
+  .pm-card {
+    height:175px;
+    border-radius:24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    box-sizing:border-box;
+    box-shadow:0 5px 15px rgba(0,0,0,.04);
+    transition:.2s;
+  }
+
+  .pm-card:active {
+    transform:scale(.96);
+  }
+
+  .pm-icon {
+    font-size:55px;
+    margin-bottom:12px;
+  }
+
+  .pm-card-title {
+    font-size:25px;
+    font-weight:800;
+    color:#222;
+  }
+
+  /* अलग-अलग सुंदर रंग */
+  .pm-card-1 {
+    background:linear-gradient(145deg,#fff0f3,#ffdfe7);
+  }
+
+  .pm-card-2 {
+    background:linear-gradient(145deg,#edf5ff,#dcecff);
+  }
+
+  .pm-card-3 {
+    background:linear-gradient(145deg,#ecfff4,#d8f4e4);
+  }
+
+  .pm-card-4 {
+    background:linear-gradient(145deg,#fffbea,#fff1c7);
+  }
+
+  /* संकल्प */
+  .pm-sankalp {
+    border:0;
+    width:calc(100% - 50px);
+    cursor:pointer;
+    margin:25px 25px 20px;
+    min-height:75px;
+    border-radius:40px;
+    background:#4caf50;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:23px;
+    font-weight:700;
+    padding:10px 15px;
+    box-sizing:border-box;
+  }
+
+  /* दैनिक संदेश */
+  .pm-message-title {
+    font-size:28px;
+    font-weight:800;
+    margin:10px 25px 15px;
+    color:#171717;
+  }
+
+  .pm-message {
+    margin:0 25px;
+    background:white;
+    border-radius:24px;
+    padding:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+    box-sizing:border-box;
+  }
+
+  .pm-message-head {
+    font-size:24px;
+    font-weight:800;
+    margin-bottom:15px;
+  }
+
+  .pm-tag {
+    display:inline-block;
+    background:#ff6333;
+    color:white;
+    padding:8px 15px;
+    border-radius:7px;
+    font-weight:700;
+    margin-bottom:15px;
+  }
+
+  .pm-message-text {
+    font-size:20px;
+    line-height:1.6;
+    color:#555;
+  }
+
+  /* नीचे Navigation */
+  .pm-bottom-nav {
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    height:82px;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    box-shadow:0 -4px 15px rgba(0,0,0,.12);
+    z-index:9999;
+  }
+
+  .pm-nav-item {
+    width:30%;
+    text-align:center;
+    font-size:18px;
+    color:#444;
+  }
+
+  .pm-nav-icon {
+    font-size:32px;
+    display:block;
+  }
+
+  .pm-nav-home {
+    color:#4caf50;
+  }
+
+  /* बीच का PLUS */
+  .pm-plus {
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#12b8d4;
+    color:white;
+    border:7px solid white;
+    box-shadow:0 4px 15px rgba(0,180,210,.35);
+    font-size:48px;
+    line-height:55px;
+    text-align:center;
+    margin-top:-35px;
+  }
+
+  @media(max-width:430px){
+
+    .pm-top-header {
+      height:64px;
+      padding:0 18px;
+    }
+
+    .pm-title {
+      font-size:27px;
+    }
+
+    .pm-profile {
+      width:48px;
+      height:48px;
+    }
+
+    .pm-blessing {
+      margin:18px 16px 18px;
+      min-height:155px;
+      border-radius:22px;
+    }
+
+    .pm-blessing-line {
+      font-size:18px;
+    }
+
+    .pm-main-name {
+      font-size:34px;
+    }
+
+    .pm-grid {
+      padding:0 16px;
+      gap:14px;
+    }
+
+    .pm-card {
+      height:145px;
+      border-radius:20px;
+    }
+
+    .pm-icon {
+      font-size:44px;
+      margin-bottom:7px;
+    }
+
+    .pm-card-title {
+      font-size:20px;
+    }
+
+    .pm-sankalp {
+      margin:18px 16px;
+      min-height:65px;
+      font-size:19px;
+    }
+
+    .pm-message-title {
+      margin-left:16px;
+      margin-right:16px;
+      font-size:25px;
+    }
+
+    .pm-message {
+      margin:0 16px;
+    }
+  }
+  `;
+
+  document.head.appendChild(style);
+
+
+  /* ===============================
+     MAIN MENU HTML
+     =============================== */
+
+  const menu = document.createElement("div");
+
+  menu.id = "parmatmaMainMenu";
+
+  menu.innerHTML = `
+
+    <div class="pm-top-header">
+
+      <div class="pm-title">
+        Parmatma ek
+      </div>
+
+      <div class="pm-profile" id="pmProfilePhoto">
+        👤
+      </div>
+
+    </div>
+
+
+    <!-- परमात्मा वाला मुख्य बॉक्स -->
+
+    <div class="pm-blessing">
+
+      <div class="pm-blessing-line">
+        भगवान बाबा हनुमान जी को प्रणाम
+      </div>
+
+      <div class="pm-blessing-line">
+        महान त्यागी बाबा जुमदेव जी को प्रणाम
+      </div>
+
+      <div class="pm-main-name">
+        परमात्मा एक
+      </div>
+
+    </div>
+
+
+    <!-- चार मुख्य बॉक्स -->
+
+    <div class="pm-grid">
+
+      <div class="pm-card pm-card-1" id="pmMargdarshak">
+
+        <div class="pm-icon">👑</div>
+
+        <div class="pm-card-title">
+          मार्गदर्शक मंडल
+        </div>
+
+      </div>
+
+
+      <div class="pm-card pm-card-2" id="pmCharcha">
+
+        <div class="pm-icon">🤝</div>
+
+        <div class="pm-card-title">
+          चर्चा बैठक शेड्यूल
+        </div>
+
+      </div>
+
+
+      <div class="pm-card pm-card-3" id="pmSevak">
+
+        <div class="pm-icon">👥</div>
+
+        <div class="pm-card-title">
+          सेवक निर्देशिका
+        </div>
+
+      </div>
+
+
+      <div class="pm-card pm-card-4" id="pmHavan">
+
+        <div class="pm-icon">🔥</div>
+
+        <div class="pm-card-title">
+          हवन शेड्यूल
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- संकल्प -->
+
+    <button class="pm-sankalp" id="pmSankalpButton" type="button">
+      🙏 आज का संकल्प लें
+    </button>
+
+
+    <!-- दैनिक संदेश -->
+
+    <div class="pm-message-title">
+      दैनिक सेवक पोस्ट sandesh
+    </div>
+
+
+    <div class="pm-message">
+
+      <div class="pm-message-head">
+        सेवक मंडल (नागपुर)
+      </div>
+
+      <div class="pm-tag">
+        👑 मार्गदर्शक
+      </div>
+
+      <div class="pm-message-text">
+        परम पूज्य बाबा जुमदेव जी के आशीर्वाद से
+        सत्य, मर्यादा व प्रेम का मार्ग अपनाएं!
+        परमात्मा एक!
+      </div>
+
+    </div>
+
+
+    <!-- Bottom Navigation -->
+
+    <div class="pm-bottom-nav">
+
+      <div class="pm-nav-item pm-nav-home">
+        <span class="pm-nav-icon">🏠</span>
+        होम
+      </div>
+
+      <div class="pm-nav-item">
+        <div class="pm-plus" id="pmPlusButton">
+          +
+        </div>
+      </div>
+
+      <div class="pm-nav-item">
+        <span class="pm-nav-icon">📜</span>
+        नियम
+      </div>
+
+    </div>
+
+  `;
+
+  document.body.appendChild(menu);
+
+
+  /* ===============================
+     PROFILE PHOTO
+     =============================== */
+
+  const savedPhoto = localStorage.getItem("parmatma_profile_photo");
+
+  if (savedPhoto) {
+    document.getElementById("pmProfilePhoto").innerHTML =
+      '<img src="' + savedPhoto + '">';
+  }
+
+
+  /* ===============================
+     CARD CLICK - REAL FEATURES
+     =============================== */
+
+  function requireLoginOr(fn){
+    const u=auth.currentUser;
+    if(u && !u.isAnonymous){ fn(); return; }
+    if(window.parmatmaEmailLogin) window.parmatmaEmailLogin();
+    else openLogin();
+  }
+
+  document.getElementById("pmMargdarshak").onclick = function(e){
+    e.preventDefault();
+    requireLoginOr(()=>openGuides());
+  };
+
+  document.getElementById("pmCharcha").onclick = function(e){
+    e.preventDefault();
+    requireLoginOr(()=>openSchedules("charcha"));
+  };
+
+  document.getElementById("pmSevak").onclick = function(e){
+    e.preventDefault();
+    requireLoginOr(()=>openSevakDirectory());
+  };
+
+  document.getElementById("pmHavan").onclick = function(e){
+    e.preventDefault();
+    requireLoginOr(()=>openSchedules("havan"));
+  };
+
+  const plusButton=document.getElementById("pmPlusButton");
+  if(plusButton){
+    plusButton.onclick=function(e){
+      e.preventDefault();
+      requireLoginOr(()=>openPostsV2());
+    };
+  }
+
+
+  /* ===============================
+     SPLASH → MAIN MENU
+     =============================== */
+
+  function showMainMenu() {
+
+    const splash = document.getElementById("splashScreen");
+    const registration = document.getElementById("registrationScreen");
+
+    if (registration) {
+      registration.style.display = "none";
+      registration.style.visibility = "hidden";
+    }
+
+    if (splash) {
+      splash.style.opacity = "0";
+
+      setTimeout(function(){
+        splash.style.display = "none";
+        menu.style.display = "block";
+        window.scrollTo(0,0);
+      }, 500);
+
+    } else {
+
+      menu.style.display = "block";
+      window.scrollTo(0,0);
+
+    }
+
+  }
+
+
+  /*
+     Splash लगभग 2.5 सेकंड चलेगा
+     फिर Main Menu खुलेगा
+  */
+
+  setTimeout(showMainMenu, 2500);
+
+})();
+    </script>
+
+<!-- =====================================================
+     PARAMATMA EK - SEVAK DIRECTORY + SCHEDULES + POSTS
+     ===================================================== -->
+<style>
+  .pe-panel{position:fixed;inset:0;background:#f5f7fb;z-index:1000000;display:none;overflow-y:auto;font-family:Arial,"Noto Sans Devanagari",sans-serif}
+  .pe-head{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+  .pe-back{width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:27px;cursor:pointer}
+  .pe-title{font-size:21px;font-weight:800}
+  .pe-wrap{max-width:720px;margin:0 auto;padding:14px 14px 40px}
+  .pe-search{width:100%;border:1px solid #ddd;border-radius:14px;padding:13px 15px;font-size:17px;outline:none;background:#fff;margin-bottom:12px}
+  .pe-card{background:#fff;border-radius:18px;padding:15px;margin:10px 0;box-shadow:0 3px 12px rgba(0,0,0,.07)}
+  .pe-name{font-size:20px;font-weight:800;margin-bottom:7px}
+  .pe-info{font-size:16px;line-height:1.7;color:#444}
+  .pe-badge{display:inline-block;margin-top:8px;background:#ff5722;color:#fff;border-radius:10px;padding:6px 10px;font-weight:700}
+  .pe-empty{text-align:center;color:#777;padding:28px 10px}
+  .pe-btn{border:0;border-radius:12px;padding:11px 14px;font-size:16px;font-weight:800;cursor:pointer}
+  .pe-btn-main{background:#ff5722;color:#fff}.pe-btn-edit{background:#fff0df;color:#b84b00}.pe-btn-delete{background:#ffe2e2;color:#b00020}
+  .pe-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .pe-notice{background:#fff7cf;border:2px solid #f2c94c;border-radius:16px;padding:13px 14px;margin-bottom:13px;font-size:16px;line-height:1.55}
+  .pe-notice strong{display:block;font-size:19px;margin-bottom:4px}
+  .pe-schedule-date{font-size:21px;font-weight:800}.pe-schedule-meta{font-size:16px;line-height:1.75;color:#444;margin-top:7px}.pe-schedule-note{margin-top:10px;padding-top:10px;border-top:1px solid #eee;line-height:1.6}
+  .pe-form{display:none;background:#fff;border-radius:18px;padding:15px;margin-bottom:14px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+  .pe-form input,.pe-form textarea{width:100%;border:1px solid #ddd;border-radius:12px;padding:12px;font-size:16px;margin:6px 0 10px;font-family:inherit;outline:none}.pe-form textarea{min-height:85px;resize:vertical}
+  .pe-label{font-weight:700;font-size:15px}.pe-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+  .pe-main-post{background:#fff;border-radius:18px;padding:14px;margin:10px 16px;box-shadow:0 3px 12px rgba(0,0,0,.07)}
+  .pe-main-post-text{font-size:18px;line-height:1.6;white-space:pre-wrap;word-break:break-word}.pe-main-post img{display:block;width:100%;max-height:360px;object-fit:contain;border-radius:14px;margin-top:10px;background:#f4f4f4}
+  .pe-main-post-meta{font-size:12px;color:#777;margin-bottom:7px}
+</style>
+
+<script>
+(function(){
+  var firebasePromise = null;
+  var currentUsers = [];
+  var currentScheduleType = "discussion";
+  var editingScheduleId = null;
+  var postUnsubMain = null;
+
+  async function firebase(){
+    if(firebasePromise) return firebasePromise;
+    firebasePromise=(async function(){
+      var appmod=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+      var fs=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      var authmod=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+      var config={apiKey:"AIzaSyCOWrCyxMdLoevvOPyuXL6V3DP0mMfo5fU",authDomain:"parmatma-ek-e561d.firebaseapp.com",projectId:"parmatma-ek-e561d",storageBucket:"parmatma-ek-e561d.firebasestorage.app",messagingSenderId:"477168010558",appId:"1:477168010558:web:ae27b57110a6fc1ff1586f",measurementId:"G-CJTPB27P1B"};
+      var app=appmod.getApps().length?appmod.getApp():appmod.initializeApp(config);
+      var auth=authmod.getAuth(app);
+      if(!auth.currentUser){
+        await new Promise(function(resolve,reject){
+          var settled=false;
+          var unsub=authmod.onAuthStateChanged(auth,function(u){
+            if(u && !u.isAnonymous){settled=true;unsub();resolve(u);}
+            else if(!u && !settled){setTimeout(function(){if(!settled){unsub();reject(new Error("LOGIN_REQUIRED"))}},12000);}
+          });
+        });
+      }
+      if(!auth.currentUser || auth.currentUser.isAnonymous) throw new Error("LOGIN_REQUIRED");
+      window.parmatmaPostUid=auth.currentUser.uid;
+      return {db:fs.getFirestore(app),collection:fs.collection,getDocs:fs.getDocs,addDoc:fs.addDoc,updateDoc:fs.updateDoc,deleteDoc:fs.deleteDoc,doc:fs.doc,query:fs.query,orderBy:fs.orderBy,limit:fs.limit,onSnapshot:fs.onSnapshot,myUid:window.parmatmaPostUid};
+    })().catch(function(err){ firebasePromise=null; throw err; });
+    return firebasePromise;
+  }
+  function closePanel(id){var el=document.getElementById(id);if(el)el.style.display="none";document.body.style.overflow=""}
+  function esc(v){return String(v||"").replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+
+  function makeSevak(){
+    if(document.getElementById("sevakPanel")) return;
+    var p=document.createElement("div");p.id="sevakPanel";p.className="pe-panel";
+    p.innerHTML='<div class="pe-head"><button class="pe-back" id="sevakBack">‹</button><div class="pe-title">👥 सेवक निर्देशिका</div></div><div class="pe-wrap"><input id="sevakSearch" class="pe-search" placeholder="नाम, मोबाइल, जिला या गांव खोजें..."><div id="sevakList"><div class="pe-empty">⏳ सेवक लोड हो रहे हैं...</div></div></div>';
+    document.body.appendChild(p);document.getElementById("sevakBack").onclick=function(){closePanel("sevakPanel")};document.getElementById("sevakSearch").oninput=function(){renderUsers(this.value)};
+  }
+  async function openSevakPanel(){makeSevak();document.getElementById("sevakPanel").style.display="block";document.body.style.overflow="hidden";await loadUsers()}
+  async function loadUsers(){
+    var list=document.getElementById("sevakList");if(!list)return;list.innerHTML='<div class="pe-empty">⏳ Firebase से सेवक लोड हो रहे हैं...</div>';
+    try{var f=await firebase();var snap=await f.getDocs(f.collection(f.db,"users"));currentUsers=[];snap.forEach(function(x){currentUsers.push({id:x.id,...x.data()})});renderUsers(document.getElementById("sevakSearch").value||"")}
+    catch(e){list.innerHTML='<div class="pe-empty">❌ सेवक लोड नहीं हुए।<br><br>'+esc(e.message)+'</div>'}
+  }
+  function renderUsers(term){
+    var list=document.getElementById("sevakList");if(!list)return;term=(term||"").trim().toLowerCase();var arr=currentUsers.filter(function(u){return !term||[u.name,u.mobile,u.district,u.cityVillage,u.language].join(" ").toLowerCase().includes(term)});
+    if(!arr.length){list.innerHTML='<div class="pe-empty">अभी कोई सेवक नहीं मिला।</div>';return}
+    list.innerHTML="";arr.forEach(function(u){var c=document.createElement("div");c.className="pe-card";c.innerHTML='<div class="pe-name">👤 '+esc(u.name||"नाम उपलब्ध नहीं")+'</div><div class="pe-info">📱 '+esc(u.mobile||"मोबाइल उपलब्ध नहीं")+'<br>📍 '+esc(u.district||"")+(u.cityVillage?' - '+esc(u.cityVillage):'')+(u.language?'<br>🌐 भाषा: '+esc(u.language):'')+'</div>'+(u.role==="margdarshak"?'<div class="pe-badge">👑 मार्गदर्शक</div>':'');list.appendChild(c)})
+  }
+
+  function makeSchedule(){
+    if(document.getElementById("schedulePanel"))return;
+    var p=document.createElement("div");p.id="schedulePanel";p.className="pe-panel";
+    p.innerHTML='<div class="pe-head"><button class="pe-back" id="scheduleBack">‹</button><div class="pe-title" id="scheduleTitle">चर्चा बैठक शेड्यूल</div></div><div class="pe-wrap"><div id="scheduleNotice"></div><div class="pe-toolbar"><button class="pe-btn pe-btn-main" id="scheduleAddBtn">➕ नई बैठक जोड़ें</button></div><div class="pe-form" id="scheduleForm"><div class="pe-label">तारीख</div><input type="date" id="schDate"><div class="pe-label">समय</div><input type="time" id="schTime"><div class="pe-label">स्थान</div><input id="schLocation" placeholder="बैठक का स्थान"><div class="pe-label">मार्गदर्शक / आयोजक</div><input id="schGuide" placeholder="नाम"><div class="pe-label">विशेष सूचना</div><textarea id="schNotice" placeholder="इस बैठक की विशेष सूचना..."></textarea><div class="pe-label">अन्य जानकारी</div><textarea id="schNotes" placeholder="अन्य जानकारी..."></textarea><div class="pe-actions"><button class="pe-btn pe-btn-main" id="schSave">💾 सेव करें</button><button class="pe-btn" id="schCancel">रद्द करें</button></div></div><div id="scheduleList"><div class="pe-empty">⏳ शेड्यूल लोड हो रहा है...</div></div></div>';
+    document.body.appendChild(p);document.getElementById("scheduleBack").onclick=function(){closePanel("schedulePanel")};document.getElementById("scheduleAddBtn").onclick=function(){openScheduleForm()};document.getElementById("schCancel").onclick=function(){hideScheduleForm()};document.getElementById("schSave").onclick=saveSchedule;
+  }
+  function openSchedulePanel(type){makeSchedule();currentScheduleType=type;editingScheduleId=null;document.getElementById("scheduleTitle").textContent=type==="havan"?"🔥 हवन शेड्यूल":"चर्चा बैठक शेड्यूल";document.getElementById("scheduleTitle").removeAttribute("data-date");document.getElementById("scheduleAddBtn").textContent=type==="havan"?"➕ नया हवन जोड़ें":"➕ नई बैठक जोड़ें";document.getElementById("schedulePanel").style.display="block";document.body.style.overflow="hidden";hideScheduleForm();loadSchedules()}
+  function hideScheduleForm(){var f=document.getElementById("scheduleForm");if(f)f.style.display="none";editingScheduleId=null}
+  function openScheduleForm(data,id){editingScheduleId=id||null;var f=document.getElementById("scheduleForm");f.style.display="block";document.getElementById("schDate").value=data&&data.date||"";document.getElementById("schTime").value=data&&data.time||"";document.getElementById("schLocation").value=data&&data.location||"";document.getElementById("schGuide").value=data&&data.guide||"";document.getElementById("schNotice").value=data&&data.specialNotice||"";document.getElementById("schNotes").value=data&&data.notes||"";window.scrollTo(0,0)}
+  function passwordOK(){var p=prompt("🔐 पासवर्ड डालें:");return p==="4351"}
+  async function saveSchedule(){
+    if(!passwordOK()){alert("❌ गलत Password! बदलाव सेव नहीं हुआ।");return}
+    var date=document.getElementById("schDate").value,time=document.getElementById("schTime").value,location=document.getElementById("schLocation").value.trim(),guide=document.getElementById("schGuide").value.trim(),specialNotice=document.getElementById("schNotice").value.trim(),notes=document.getElementById("schNotes").value.trim();
+    if(!date||!time||!location){alert("कृपया तारीख, समय और स्थान भरें।");return}
+    try{var f=await firebase();var col=currentScheduleType==="havan"?"havanSchedules":"discussionSchedules";var data={date,time,location,guide,specialNotice,notes,updatedAt:Date.now()};if(editingScheduleId)await f.updateDoc(f.doc(f.db,col,editingScheduleId),data);else await f.addDoc(f.collection(f.db,col),{...data,createdAt:Date.now()});alert(editingScheduleId?"✅ शेड्यूल अपडेट हो गया।":"✅ शेड्यूल सेव हो गया।");hideScheduleForm();loadSchedules()}catch(e){alert("❌ Firebase में सेव नहीं हुआ।\n\n"+e.message)}
+  }
+  async function loadSchedules(){
+    var list=document.getElementById("scheduleList"),notice=document.getElementById("scheduleNotice");if(!list)return;list.innerHTML='<div class="pe-empty">⏳ शेड्यूल लोड हो रहा है...</div>';notice.innerHTML="";
+    try{var f=await firebase(),col=currentScheduleType==="havan"?"havanSchedules":"discussionSchedules",snap=await f.getDocs(f.collection(f.db,col)),arr=[];snap.forEach(function(x){arr.push({id:x.id,...x.data()})});arr.sort(function(a,b){return ((a.date||"")+" "+(a.time||"")).localeCompare((b.date||"")+" "+(b.time||""))});if(!arr.length){list.innerHTML='<div class="pe-empty">अभी कोई शेड्यूल नहीं है।</div>';return}var notices=arr.filter(function(x){return x.specialNotice});if(notices.length){notice.innerHTML='<div class="pe-notice"><strong>📢 विशेष सूचना</strong>'+esc(notices[0].specialNotice)+'</div>'}list.innerHTML="";arr.forEach(function(x){var c=document.createElement("div");c.className="pe-card";c.innerHTML='<div class="pe-schedule-date">'+esc(x.date||"")+' &nbsp; ⏰ '+esc(x.time||"")+'</div><div class="pe-schedule-meta">📍 '+esc(x.location||"")+(x.guide?'<br>👤 '+esc(x.guide):'')+'</div>'+(x.specialNotice?'<div class="pe-schedule-note"><b>📢 विशेष सूचना:</b><br>'+esc(x.specialNotice)+'</div>':'')+(x.notes?'<div class="pe-schedule-note">📝 '+esc(x.notes)+'</div>':'')+'<div class="pe-actions"><button class="pe-btn pe-btn-edit" data-edit="'+x.id+'">✏️ Edit</button><button class="pe-btn pe-btn-delete" data-del="'+x.id+'">🗑️ Delete</button></div>';c.querySelector('[data-edit]').onclick=function(){if(passwordOK())openScheduleForm(x,x.id)};c.querySelector('[data-del]').onclick=async function(){if(!passwordOK())return;try{await f.deleteDoc(f.doc(f.db,col,x.id));toast("✅ शेड्यूल Delete हो गया।");loadSchedules()}catch(e){toast("❌ Delete नहीं हुआ: "+e.message)}};list.appendChild(c)})}
+    catch(e){list.innerHTML='<div class="pe-empty">❌ शेड्यूल लोड नहीं हुआ।<br><br>'+esc(e.message)+'</div>'}
+  }
+
+  function addMainPostArea(){
+    var title=document.querySelector(".pm-message-title");var msg=document.querySelector(".pm-message");if(!title||!msg||document.getElementById("mainSharedPostsList"))return;var box=document.createElement("div");box.innerHTML='<div style="font-size:20px;font-weight:800;margin:18px 16px 8px">📢 सेवक संदेश</div><div id="mainSharedPostsList"><div class="pe-empty">⏳ पोस्ट लोड हो रही हैं...</div></div>';msg.after(box);loadMainPosts()
+  }
+  async function loadMainPosts(){
+    var list=document.getElementById("mainSharedPostsList");if(!list)return;try{var f=await firebase(),q=f.query(f.collection(f.db,"posts"),f.orderBy("createdAtMs","desc"),f.limit(30));if(postUnsubMain)postUnsubMain();postUnsubMain=f.onSnapshot(q,function(snap){list.innerHTML="";if(snap.empty){list.innerHTML='<div class="pe-empty">अभी कोई नई पोस्ट नहीं है।</div>';return}snap.forEach(function(d){var x=d.data()||{},c=document.createElement("div");c.className="pe-main-post";c.innerHTML='<div class="pe-main-post-meta">📅 '+new Date(x.createdAtMs||Date.now()).toLocaleString("hi-IN")+'</div>'+'<div class="pePostHead"><img style="width:52px;height:52px;border-radius:50%;object-fit:cover" alt="प्रोफाइल फोटो"><div><div class="pePostAuthor"></div><div class="pePostRole"></div></div></div>'+(x.text?'<div class="pe-main-post-text"></div>':'')+((x.imageURL||x.imageData)?'<img alt="पोस्ट फोटो">':'');
+          const ph=c.querySelector('.pePostHead img');
+          const pa=c.querySelector('.pePostAuthor');
+          const pr=c.querySelector('.pePostRole');
+          ph.src=x.authorPhotoURL||'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="100%" height="100%" fill="#e9eef5"/><circle cx="60" cy="42" r="24" fill="#1976d2"/><path d="M22 112c5-31 71-31 76 0" fill="#1976d2"/></svg>');
+          pa.textContent=x.authorName||'परमात्मा एक सदस्य';
+          pr.textContent=x.authorRole==='margdarshak'?'👑 मार्गदर्शक':x.authorRole==='sevak'?'👥 सेवक':x.authorRole==='admin'?'🛡️ Admin':'👤 सदस्य';
+          if(x.text)c.querySelector(".pe-main-post-text").textContent=x.text;if(x.imageURL||x.imageData)c.querySelector("img:not(.pePostHead img)").src=x.imageURL||x.imageData;if(x.authorUid&&x.authorUid===f.myUid){var del=document.createElement("button");del.className="postDeleteBtn mainPostDelete";del.type="button";del.textContent="🗑️ मेरी पोस्ट Delete करें";del.onclick=async function(){del.disabled=true;del.textContent="⏳ Delete हो रही है...";try{await f.deleteDoc(f.doc(f.db,"posts",d.id));toast("✅ आपकी पोस्ट Delete हो गई।")}catch(err){del.disabled=false;del.textContent="🗑️ मेरी पोस्ट Delete करें";toast("❌ पोस्ट Delete नहीं हुई: "+err.message)}};c.appendChild(del)}list.appendChild(c)})},function(e){list.innerHTML='<div class="pe-empty">❌ पोस्ट लोड नहीं हुई।<br><br>'+esc(e.message)+'</div>'})}catch(e){list.innerHTML='<div class="pe-empty">'+(e&&e.message==='LOGIN_REQUIRED'?'🔐 पोस्ट देखने के लिए पहले Login करें।':'❌ Firebase से पोस्ट लोड नहीं हुई।<br><br>'+esc(e.message))+'</div>'}}
+
+  // Make the existing Plus button open the post composer.
+  var postOpen=window.openPostPanel;
+  window.openSevakPanel=openSevakPanel;window.openSchedulePanel=openSchedulePanel;
+  setTimeout(addMainPostArea,700);
+})();
+</script>
+<!-- =====================================================
+     PARAMATMA EK - DAILY SANKALP
+     ===================================================== -->
+<style>
+  #parmatmaSankalpPanel{position:fixed;inset:0;background:#f5f7fb;z-index:1090000;display:none;overflow-y:auto;font-family:Arial,"Noto Sans Devanagari",sans-serif}
+  .ps-head{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+  .ps-back{width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:28px}
+  .ps-wrap{max-width:760px;margin:0 auto;padding:16px 14px 45px}
+  .ps-card{background:#fff;border-radius:20px;padding:18px;box-shadow:0 3px 12px rgba(0,0,0,.08);line-height:1.75;font-size:17px}
+  .ps-card h2{margin:0 0 8px;color:#c62828;font-size:24px}
+  .ps-list{margin:12px 0;padding-left:24px}.ps-list li{margin:8px 0}
+  .ps-confirm{width:100%;border:0;border-radius:15px;padding:14px;background:#4caf50;color:#fff;font-size:18px;font-weight:800;margin-top:15px}
+  .ps-done{display:none;background:#e8f5e9;color:#1b5e20;border-radius:15px;padding:14px;margin-top:14px;font-weight:800;text-align:center}
+</style>
+<script>
+(function(){
+  function todayKey(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+  function makeSankalp(){
+    if(document.getElementById("parmatmaSankalpPanel"))return;
+    var p=document.createElement("div");p.id="parmatmaSankalpPanel";
+    p.innerHTML='<div class="ps-head"><button class="ps-back" id="psBack">‹</button><div style="font-size:21px;font-weight:800">🙏 आज का संकल्प</div></div><div class="ps-wrap"><div class="ps-card"><h2>मानव धर्म संकल्प</h2><div>मैं आज अपने जीवन में मानव धर्म के इन मूल्यों को आचरण में रखने का संकल्प लेता/लेती हूँ:</div><ul class="ps-list"><li>सत्य बोलूँगा/बोलूँगी।</li><li>मर्यादा का पालन करूँगा/करूँगी।</li><li>सभी के साथ प्रेम से व्यवहार करूँगा/करूँगी।</li><li>बुरे व्यसनों से दूर रहने का प्रयास करूँगा/करूँगी।</li><li>एक परमेश्वर में श्रद्धा रखते हुए परिवार और सेवकों में एकता बनाए रखूँगा/रखूँगी।</li></ul><button class="ps-confirm" id="psConfirm">🙏 मैं आज का संकल्प लेता/लेती हूँ</button><div class="ps-done" id="psDone">✓ आज का संकल्प लिया जा चुका है 🙏</div></div></div>';
+    document.body.appendChild(p);
+    document.getElementById("psBack").onclick=function(){p.style.display="none";document.body.style.overflow=""};
+    document.getElementById("psConfirm").onclick=function(){localStorage.setItem("parmatma_daily_sankalp",todayKey());updateSankalpButton();document.getElementById("psConfirm").style.display="none";document.getElementById("psDone").style.display="block";};
+  }
+  function updateSankalpButton(){var b=document.getElementById("pmSankalpButton");if(!b)return;var done=localStorage.getItem("parmatma_daily_sankalp")===todayKey();b.textContent=done?"✓ आज का संकल्प लिया जा चुका है 🙏":"🙏 आज का संकल्प लें"}
+  function openSankalp(){makeSankalp();var p=document.getElementById("parmatmaSankalpPanel");var done=localStorage.getItem("parmatma_daily_sankalp")===todayKey();document.getElementById("psConfirm").style.display=done?"none":"block";document.getElementById("psDone").style.display=done?"block":"none";p.style.display="block";document.body.style.overflow="hidden"}
+  setTimeout(updateSankalpButton,500);
+})();
+</script>
+
+<!-- =====================================================
+     PARAMATMA EK - NIYAM / MANAV DHARMA PAGE
+     Source-based content: Manav Dharma / Parmatma Ek public pages
+     ===================================================== -->
+<style>
+  #parmatmaRulesPanel{position:fixed;inset:0;background:#f5f7fb;z-index:1100000;display:none;overflow-y:auto;font-family:Arial,"Noto Sans Devanagari",sans-serif}
+  .pr-head{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+  .pr-back{width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:28px;cursor:pointer}
+  .pr-title{font-size:21px;font-weight:800}
+  .pr-wrap{max-width:760px;margin:0 auto;padding:14px 14px 45px}
+  .pr-intro{background:#fff;border-radius:18px;padding:16px;margin-bottom:13px;box-shadow:0 3px 12px rgba(0,0,0,.07);line-height:1.7}
+  .pr-intro h2{margin:0 0 5px;font-size:23px;color:#c62828}
+  .pr-sub{color:#666;font-size:14px}
+  .pr-card{background:#fff;border-radius:18px;padding:16px;margin:13px 0;box-shadow:0 3px 12px rgba(0,0,0,.07)}
+  .pr-card h3{margin:0 0 12px;font-size:21px;color:#b23a48}
+  .pr-item{padding:11px 0;border-bottom:1px solid #eee;font-size:17px;line-height:1.65}
+  .pr-item:last-child{border-bottom:0;padding-bottom:0}
+  .pr-num{font-weight:800;margin-right:5px}
+  .pr-note{background:#fff8df;border:1px solid #f1d26a;border-radius:15px;padding:14px;margin-top:13px;line-height:1.65;font-size:15px}
+  .pr-source{color:#777;font-size:13px;line-height:1.6;margin-top:15px;padding:0 4px}
+</style>
+<script>
+(function(){
+  function makeRulesPanel(){
+    if(document.getElementById('parmatmaRulesPanel')) return;
+    var p=document.createElement('div');
+    p.id='parmatmaRulesPanel';
+    p.innerHTML=''
+      +'<div class="pr-head"><button class="pr-back" id="prBack">‹</button><div class="pr-title">📜 मानव धर्म नियम व सिद्धांत</div></div>'
+      +'<div class="pr-wrap">'
+      +'<div class="pr-intro"><h2>🌺 मानव धर्म</h2><div>महानत्यागी बाबा जुमदेवजी की मानव धर्म की शिक्षाओं के अनुसार सत्य, मर्यादा, प्रेम और एक परमेश्वर की भक्ति के मार्ग पर चलना।</div><div class="pr-sub">परमात्मा एक • मानव धर्म • सत्य • मर्यादा • प्रेम</div></div>'
+      +'<div class="pr-card"><h3>🌟 चार तत्व</h3>'
+      +'<div class="pr-item"><span class="pr-num">1.</span>परमात्मा एक</div>'
+      +'<div class="pr-item"><span class="pr-num">2.</span>मरे या जिये भगवत नाम पर</div>'
+      +'<div class="pr-item"><span class="pr-num">3.</span>दुःखदारी दूर करते हुए उद्धार</div>'
+      +'<div class="pr-item"><span class="pr-num">4.</span>इच्छा अनुसार भोजन</div></div>'
+      +'<div class="pr-card"><h3>🙏 तीन शब्द</h3>'
+      +'<div class="pr-item"><span class="pr-num">1.</span>सत्य बोलना</div>'
+      +'<div class="pr-item"><span class="pr-num">2.</span>मर्यादा पालना</div>'
+      +'<div class="pr-item"><span class="pr-num">3.</span>प्रेम से व्यवहार करना</div></div>'
+      +'<div class="pr-card"><h3>📜 पाँच नियम</h3>'
+      +'<div class="pr-item"><span class="pr-num">1.</span>ध्येय से एक परमेश्वर को मानना।</div>'
+      +'<div class="pr-item"><span class="pr-num">2.</span>सत्य, मर्यादा और प्रेम सेवकों तथा परिवार में कायम रखना।</div>'
+      +'<div class="pr-item"><span class="pr-num">3.</span>अनेक बुरे व्यसन बंद करना।<br><small>(दारू, टॉनिक, सट्टा, जुआ, लॉटरी, चोरी करना, झूठ बोलना, गुस्सा करना आदि तथा मानव जीवन को नीचे लाने वाले बुरे व्यसन छोड़ना।)</small></div>'
+      +'<div class="pr-item"><span class="pr-num">4.</span>परिवार और सेवकों में एकता कायम करना।</div>'
+      +'<div class="pr-item"><span class="pr-num">5.</span>अपना परिवार मर्यादित रखना।</div></div>'
+      +'<div class="pr-note"><b>🙏 विशेष निर्देश</b><br>इसके अलावा समय-समय पर बाबा के आदेश का पालन करना।</div>'
+      +'<div class="pr-source">स्रोत-आधारित सामग्री: “मानवधर्म परिचय पुस्तक” (मराठी), सुधारित पाँचवीं आवृत्ति — प्रकरण 13 “मानवधर्म” और प्रकरण 16 “पाँच नियम”; साथ ही परमात्मा एक / मानव धर्म की सार्वजनिक वेबसाइट पर उपलब्ध चार तत्व, तीन शब्द और पाँच नियम की जानकारी।</div>'
+      +'</div>';
+    document.body.appendChild(p);
+    document.getElementById('prBack').onclick=function(){p.style.display='none';document.body.style.overflow=''};
+  }
+  function openRules(){makeRulesPanel();var p=document.getElementById('parmatmaRulesPanel');p.style.display='block';document.body.style.overflow='hidden'}
+
+})();
+</script>
+
+
+
+<style>
+.peMainAuthor{display:flex;gap:10px;align-items:center;margin:8px 0 12px}.peMainAuthor img{width:52px;height:52px;border-radius:50%;object-fit:cover}.peMainAuthorName{font-weight:900;font-size:18px}.peMainAuthorRole{font-size:13px;font-weight:800;color:#6b38cf;margin-top:2px}
+</style>
+
+<!-- =========================================================
+     PARMATMA EK V2 FEATURE LAYER
+     Adds: My Profile, Login/Register, Edit Profile,
+     Sevak Directory, Guide assignment, author identity on posts,
+     schedules, notifications UI, and role-aware controls.
+     Native Android permissions + native AdMob SDK still belong
+     in the Android wrapper/project.
+     ========================================================= -->
+<style>
+#peV2Root{position:fixed;inset:0;z-index:2000000;background:#f5f7fb;display:none;overflow:auto;font-family:Arial,"Noto Sans Devanagari",sans-serif;color:#171717}
+#peV2Root *{box-sizing:border-box}
+.peTop{position:sticky;top:0;z-index:20;color:#fff;padding:14px 16px;background:linear-gradient(135deg,#ff3d57,#8b35ff,#00a9e8);display:flex;align-items:center;gap:12px;box-shadow:0 3px 14px rgba(0,0,0,.16)}
+.peBack{width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:28px}
+.peTitle{font-size:21px;font-weight:900;flex:1}
+.peWrap{max-width:760px;margin:auto;padding:16px 14px 100px}
+.peCard{background:#fff;border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.peHero{background:linear-gradient(135deg,#ed0f8c,#5c42ff,#00a9ee);color:#fff;border-radius:24px;padding:22px 18px;text-align:center}
+.peAvatar{width:92px;height:92px;border-radius:50%;object-fit:cover;background:#e9eef5;border:4px solid #fff;box-shadow:0 5px 18px rgba(0,0,0,.18)}
+.peName{font-size:24px;font-weight:900;margin-top:10px}
+.peBadge{display:inline-block;padding:7px 12px;border-radius:999px;background:#fff;color:#5c35c8;font-weight:900;font-size:13px;margin-top:7px}
+.peGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.peTile{border:0;border-radius:20px;padding:20px 10px;font-size:17px;font-weight:900;min-height:105px;box-shadow:0 3px 12px rgba(0,0,0,.07);background:#fff}
+.peTile b{display:block;font-size:31px;margin-bottom:7px}
+.peBtn{border:0;border-radius:14px;padding:13px 16px;font-size:16px;font-weight:900;cursor:pointer}
+.pePrimary{background:#ff5722;color:#fff}.peGreen{background:#4caf50;color:#fff}.peBlue{background:#2196f3;color:#fff}.peGray{background:#eee;color:#222}.peDanger{background:#ffe3e3;color:#c62828}
+.peInput,.peArea,.peSelect{width:100%;border:1px solid #ddd;border-radius:13px;padding:13px;font-size:17px;margin-top:7px;outline:none;font-family:inherit;background:#fff}
+.peArea{min-height:110px;resize:vertical}
+.peLabel{font-weight:800;margin-top:12px;display:block}
+.peRow{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.peUser{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid #eee}
+.peUser:last-child{border-bottom:0}
+.peSmallAvatar{width:58px;height:58px;border-radius:50%;object-fit:cover;background:#e9eef5}
+.peUserMain{min-width:0}.peUser > .peRow{grid-column:1 / -1}.peUserName{font-size:18px;font-weight:900}.peMeta{font-size:13px;color:#666;margin-top:3px}
+.pePostHead{display:flex;gap:11px;align-items:center;margin-bottom:10px}
+.pePostHead img{width:52px;height:52px;border-radius:50%;object-fit:cover;background:#eee}
+.pePostAuthor{font-weight:900;font-size:17px}.pePostRole{font-size:13px;font-weight:800;color:#6b38cf}
+.pePostText{font-size:18px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.pePostImg{width:100%;max-height:430px;object-fit:contain;border-radius:16px;margin-top:10px;background:#f2f2f2}
+.peEmpty{text-align:center;color:#777;padding:25px}
+.peNotice{background:#fff8dc;border:1px solid #f0d36d;border-radius:14px;padding:12px;font-size:14px;line-height:1.55}
+.peCheck{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-size:16px;line-height:1.5}
+@media(max-width:430px){.peGrid{gap:9px}.peTile{padding:15px 8px;font-size:15px}}
+</style>
+
+<!-- DISABLED LEGACY DUPLICATE SCRIPT: consolidated in V9 -->
+<!-- FINAL CLEAN FIX -->
+<style>
+#peFinalToast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);z-index:9999999;max-width:90%;padding:13px 18px;border-radius:14px;background:#202124;color:#fff;font-size:16px;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:.25s;text-align:center;line-height:1.45}
+#peFinalToast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.peFinalPanel{position:fixed;inset:0;z-index:9999998;background:#f6f7fb;overflow:auto;font-family:Arial,"Noto Sans Devanagari",sans-serif}
+.peFinalHead{position:sticky;top:0;z-index:3;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;padding:13px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 14px rgba(0,0,0,.18)}
+.peFinalBack{width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:30px}.peFinalTitle{font-size:22px;font-weight:900}.peFinalWrap{max-width:760px;margin:auto;padding:15px 14px 45px}
+.peFinalCard{background:#fff;border-radius:20px;padding:18px;margin:13px 0;box-shadow:0 3px 14px rgba(0,0,0,.08);line-height:1.75;color:#222;font-size:17px}.peFinalCard h2,.peFinalCard h3{margin:0 0 10px;color:#c62828}.peFinalCard h2{font-size:24px}.peFinalCard h3{font-size:21px}.peFinalItem{padding:10px 0;border-bottom:1px solid #eee}.peFinalItem:last-child{border-bottom:0}.peFinalAction{width:100%;border:0;border-radius:15px;padding:14px;background:#43a047;color:#fff;font-size:18px;font-weight:900;margin-top:15px}.peFinalDone{background:#e8f5e9;color:#1b5e20;border-radius:15px;padding:14px;text-align:center;font-weight:900;margin-top:14px}
+</style><div id="peFinalToast"></div>
+<script>
+(function(){
+ function toast(msg){var t=document.getElementById('peFinalToast');if(!t)return;t.textContent=String(msg||'');t.classList.add('show');clearTimeout(window.__peToastTimer);window.__peToastTimer=setTimeout(function(){t.classList.remove('show')},2600)}
+ window.alert=function(msg){toast(msg)};
+ function closePanel(id){var p=document.getElementById(id);if(p){p.style.display='none';document.body.style.overflow=''}}
+ function openSankalpFinal(){var old=document.getElementById('peFinalSankalp');if(old)old.remove();var p=document.createElement('div');p.id='peFinalSankalp';p.className='peFinalPanel';var d=new Date(),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),done=localStorage.getItem('parmatma_daily_sankalp')===key;p.innerHTML='<div class="peFinalHead"><button class="peFinalBack" type="button">‹</button><div class="peFinalTitle">🙏 आज का संकल्प</div></div><div class="peFinalWrap"><div class="peFinalCard"><h2>मानव धर्म संकल्प</h2><div>मैं आज अपने जीवन में मानव धर्म के इन मूल्यों को अपने आचरण में रखने का संकल्प लेता/लेती हूँ:</div><div class="peFinalItem"><b>1.</b> सत्य बोलूँगा/बोलूँगी।</div><div class="peFinalItem"><b>2.</b> मर्यादा का पालन करूँगा/करूँगी।</div><div class="peFinalItem"><b>3.</b> सभी के साथ प्रेम से व्यवहार करूँगा/करूँगी।</div><div class="peFinalItem"><b>4.</b> बुरे व्यसनों से दूर रहने का प्रयास करूँगा/करूँगी।</div><div class="peFinalItem"><b>5.</b> एक परमेश्वर में श्रद्धा रखते हुए परिवार और सेवकों में एकता बनाए रखूँगा/रखूँगी।</div><button class="peFinalAction" style="display:${done?"none":"block"}">🙏 मैं आज का संकल्प लेता/लेती हूँ</button><div class="peFinalDone" style="display:${done?"block":"none"}">✓ आज का संकल्प लिया जा चुका है 🙏</div></div></div>';document.body.appendChild(p);document.body.style.overflow='hidden';p.querySelector('.peFinalBack').onclick=function(){closePanel('peFinalSankalp')};p.querySelector('.peFinalAction').onclick=function(){localStorage.setItem('parmatma_daily_sankalp',key);this.style.display='none';p.querySelector('.peFinalDone').style.display='block';toast('🙏 आज का संकल्प दर्ज हो गया।')}}
+ window.__peOpenSankalpFinal=openSankalpFinal;
+ function openRulesFinal(){var old=document.getElementById('peFinalRules');if(old)old.remove();var p=document.createElement('div');p.id='peFinalRules';p.className='peFinalPanel';p.innerHTML='<div class="peFinalHead"><button class="peFinalBack" type="button">‹</button><div class="peFinalTitle">📜 मानव धर्म नियम व सिद्धांत</div></div><div class="peFinalWrap"><div class="peFinalCard"><h2>🌺 मानव धर्म</h2><div>सत्य, मर्यादा, प्रेम और एक परमेश्वर की भक्ति के मार्ग पर चलना तथा परिवार और सेवकों में एकता बनाए रखना।</div></div><div class="peFinalCard"><h3>🌟 चार तत्व</h3><div class="peFinalItem"><b>1.</b> परमात्मा एक</div><div class="peFinalItem"><b>2.</b> मरे या जिये भगवत नाम पर</div><div class="peFinalItem"><b>3.</b> दुःखदारी दूर करते हुए उद्धार</div><div class="peFinalItem"><b>4.</b> इच्छा अनुसार भोजन</div></div><div class="peFinalCard"><h3>🙏 तीन शब्द</h3><div class="peFinalItem"><b>1.</b> सत्य बोलना</div><div class="peFinalItem"><b>2.</b> मर्यादा पालना</div><div class="peFinalItem"><b>3.</b> प्रेम से व्यवहार करना</div></div><div class="peFinalCard"><h3>📜 पाँच नियम</h3><div class="peFinalItem"><b>1.</b> ध्येय से एक परमेश्वर को मानना।</div><div class="peFinalItem"><b>2.</b> सत्य, मर्यादा और प्रेम सेवकों तथा परिवार में कायम रखना।</div><div class="peFinalItem"><b>3.</b> अनेक बुरे व्यसन बंद करना — दारू, टॉनिक, सट्टा, जुआ, लॉटरी, चोरी करना, झूठ बोलना, गुस्सा करना आदि।</div><div class="peFinalItem"><b>4.</b> परिवार और सेवकों में एकता कायम करना।</div><div class="peFinalItem"><b>5.</b> अपना परिवार मर्यादित रखना।</div></div><div class="peFinalCard"><b>🙏 विशेष निर्देश</b><br>समय-समय पर बाबा के आदेश का पालन करना।</div></div>';document.body.appendChild(p);document.body.style.overflow='hidden';p.querySelector('.peFinalBack').onclick=function(){closePanel('peFinalRules')}}
+ window.__peOpenRulesFinal=openRulesFinal;
+})();
+</script>
+
+<!-- EMAIL/PASSWORD AUTH GATE: one persistent Firebase auth system -->
+<style id="parmatma-email-auth-style">
+#parmatmaEmailAuth{position:fixed;inset:0;z-index:10000000;display:none;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;background:rgba(0,0,0,.76);backdrop-filter:blur(5px);font-family:Arial,"Noto Sans Devanagari",sans-serif}
+#parmatmaEmailAuth .authCard{width:min(440px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:26px;padding:24px 20px 20px;box-sizing:border-box;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+#parmatmaEmailAuth h2{margin:0 0 7px;font-size:26px;color:#171717;text-align:center}.peaSub{text-align:center;color:#666;line-height:1.55;margin:0 0 18px}
+#parmatmaEmailAuth label{display:block;font-weight:800;color:#333;margin:11px 0 6px}#parmatmaEmailAuth input{width:100%;box-sizing:border-box;border:1px solid #d0d0d0;border-radius:13px;padding:13px 14px;font-size:17px;outline:none}#parmatmaEmailAuth input:focus{border-color:#6b35d8;box-shadow:0 0 0 3px rgba(107,53,216,.12)}
+.peaPrimary{width:100%;border:0;border-radius:14px;padding:14px 16px;margin-top:16px;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;font-size:17px;font-weight:900;cursor:pointer}.peaPrimary:disabled{opacity:.65;cursor:wait}
+.peaPhotoPick{border:1.5px dashed #cbbbe9;border-radius:15px;padding:11px;background:#faf8ff;margin-top:10px;text-align:center}.peaPhotoPick input{border:0!important;padding:7px!important;background:transparent}.peaPhotoPreview{width:82px;height:82px;border-radius:50%;object-fit:cover;border:3px solid #eee;display:none;margin:9px auto 0}.peaSwitch{width:100%;border:0;background:transparent;color:#5d24c7;font-size:15px;font-weight:800;padding:12px 6px;cursor:pointer}.peaForgot{width:100%;border:0;background:transparent;color:#666;font-size:14px;padding:5px;cursor:pointer}.peaMsg{min-height:24px;margin-top:12px;text-align:center;font-weight:800;line-height:1.45}.peaNotice{font-size:12px;color:#777;text-align:center;line-height:1.45;margin-top:10px}
+</style>
+<script type="module" id="parmatma-email-auth-gate">
+(async function(){
+  const FB="https://www.gstatic.com/firebasejs/12.18.0/";
+  const [{initializeApp,getApps,getApp},{getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail,signOut,setPersistence,browserLocalPersistence},{getFirestore,doc,setDoc,serverTimestamp}] = await Promise.all([
+    import(FB+"firebase-app.js"), import(FB+"firebase-auth.js"), import(FB+"firebase-firestore.js")
+  ]);
+  const config={apiKey:"AIzaSyCOWrCyxMdLoevvOPyuXL6V3DP0mMfo5fU",authDomain:"parmatma-ek-e561d.firebaseapp.com",projectId:"parmatma-ek-e561d",storageBucket:"parmatma-ek-e561d.firebasestorage.app",messagingSenderId:"477168010558",appId:"1:477168010558:web:ae27b57110a6fc1ff1586f",measurementId:"G-CJTPB27P1B"};
+  const app=getApps().length?getApp():initializeApp(config); const auth=getAuth(app); const db=getFirestore(app);
+  // Firebase Auth को browser/device में persist रखें ताकि successful Login के बाद हर बार Login screen न खुले।
+  try{ await setPersistence(auth,browserLocalPersistence); }catch(e){ console.warn("Auth persistence setup:",e); }
+  let mode="register", busy=false, ready=false, authStateKnown=false;
+  function hideOldAuth(){
+    ["parmatmaAppGate","pinAuthOverlay","peV2Root","registrationScreen"].forEach(id=>{const x=document.getElementById(id);if(x)x.style.display="none";});
+  }
+  function make(){
+    if(document.getElementById("parmatmaEmailAuth"))return document.getElementById("parmatmaEmailAuth");
+    const o=document.createElement("div");o.id="parmatmaEmailAuth";o.innerHTML=`<div class="authCard">
+      <h2 id="peaTitle">🔐 परमात्मा एक — Login</h2>
+      <p class="peaSub" id="peaSub">ऐप इस्तेमाल करने के लिए पहले अपने Gmail/Email और Password से Login करें।</p>
+      <div id="peaNameWrap" style="display:none"><label>पूरा नाम</label><input id="peaName" type="text" autocomplete="name" placeholder="अपना नाम लिखें"></div>
+      <label>Gmail / Email Address</label><input id="peaEmail" type="email" autocomplete="email" placeholder="example@gmail.com">
+      <label>Password</label><input id="peaPass" type="password" autocomplete="current-password" placeholder="कम से कम 6 अक्षर">
+      <div id="peaConfirmWrap" style="display:none"><label>Password दोबारा डालें</label><input id="peaConfirm" type="password" autocomplete="new-password" placeholder="Password दोबारा डालें"></div>
+      <div id="peaPhotoWrap" style="display:none" class="peaPhotoPick"><label style="margin:0 0 4px">📷 Profile Photo (वैकल्पिक)</label><input id="peaPhoto" type="file" accept="image/*"><img id="peaPhotoPreview" class="peaPhotoPreview" alt="Profile preview"><div style="font-size:12px;color:#777;margin-top:3px">फोटो 5 MB तक</div></div>
+      <div id="peaMsg" class="peaMsg"></div>
+      <button id="peaAction" class="peaPrimary">🔑 Login करें</button>
+      <button id="peaSwitch" class="peaSwitch">📝 नया Account है? Registration करें</button>
+      <button id="peaForgot" class="peaForgot">Password भूल गए?</button>
+      <div class="peaNotice">Firebase Email/Password Login • Registration एक ही बार करें। सफल Login के बाद यह स्क्रीन बार-बार नहीं खुलेगी।</div>
+    </div>`;document.body.appendChild(o);return o;
+  }
+  const o=make(), title=o.querySelector("#peaTitle"), sub=o.querySelector("#peaSub"), nameWrap=o.querySelector("#peaNameWrap"), confirmWrap=o.querySelector("#peaConfirmWrap"), photoWrap=o.querySelector("#peaPhotoWrap"), photoInput=o.querySelector("#peaPhoto"), photoPreview=o.querySelector("#peaPhotoPreview"), action=o.querySelector("#peaAction"), sw=o.querySelector("#peaSwitch"), forgot=o.querySelector("#peaForgot"), msg=o.querySelector("#peaMsg");
+  function setMode(m){mode=m;msg.textContent="";const r=m==="register";title.textContent=r?"📝 परमात्मा एक — Registration":"🔐 परमात्मा एक — Login";sub.textContent=r?"अपना नाम, Gmail/Email और Password देकर Account बनाएं।":"ऐप इस्तेमाल करने के लिए पहले अपने Gmail/Email और Password से Login करें।";nameWrap.style.display=r?"block":"none";confirmWrap.style.display=r?"block":"none";photoWrap.style.display=r?"block":"none";if(!r){photoInput.value="";photoPreview.style.display="none";}action.textContent=r?"✅ Registration करें":"🔑 Login करें";sw.textContent=r?"पहले से Account है? Login करें":"📝 नया Account है? Registration करें";forgot.style.display=r?"none":"block";}
+  function show(t,ok=false){msg.textContent=t;msg.style.color=ok?"#16803a":"#b3261e"}
+  async function imageToDataURL(file,max=512,quality=.65){return await new Promise((resolve,reject)=>{const im=new Image(),fr=new FileReader();fr.onload=()=>{im.onload=()=>{const sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));const x=c.getContext("2d");x.drawImage(im,0,0,c.width,c.height);c.toBlob(b=>{if(!b)return reject(Error("फोटो तैयार नहीं हुई"));if(b.size>700000)return reject(Error("फोटो बहुत बड़ी है। छोटी फोटो चुनें।"));const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(b)},"image/jpeg",quality)};im.onerror=()=>reject(Error("फोटो पढ़ी नहीं गई"));im.src=fr.result};fr.onerror=reject;fr.readAsDataURL(file)})}
+  photoInput.onchange=()=>{const f=photoInput.files?.[0];if(!f){photoPreview.style.display="none";return}if(!f.type.startsWith("image/")){show("केवल फोटो चुनें।");photoInput.value="";photoPreview.style.display="none";return}if(f.size>5*1024*1024){show("फोटो 5 MB से कम रखें।");photoInput.value="";photoPreview.style.display="none";return}const r=new FileReader();r.onload=e=>{photoPreview.src=e.target.result;photoPreview.style.display="block"};r.readAsDataURL(f)};
+  function showGate(){hideOldAuth();o.style.display="flex";setMode(mode);}
+  function hideGate(){o.style.display="none";hideOldAuth();}
+  window.parmatmaEmailLogin=()=>{showGate();setMode("login")};
+  window.parmatmaEmailRegister=()=>{showGate();setMode("register")};
+  window.parmatmaSetLoggedOut=async()=>{try{await signOut(auth)}catch(e){}showGate()};
+  action.onclick=async()=>{
+    if(busy)return; const email=o.querySelector("#peaEmail").value.trim(), pass=o.querySelector("#peaPass").value, name=o.querySelector("#peaName").value.trim(), confirm=o.querySelector("#peaConfirm").value;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return show("सही Gmail / Email Address डालें।");
+    if(pass.length<6)return show("Password कम से कम 6 अक्षरों का होना चाहिए।");
+    if(mode==="register" && !name)return show("कृपया अपना नाम लिखें।");
+    if(mode==="register" && pass!==confirm)return show("दोनों Password एक जैसे नहीं हैं।");
+    busy=true;action.disabled=true;action.textContent=mode==="register"?"⏳ Registration हो रहा है...":"⏳ Login हो रहा है...";
+    try{
+      if(mode==="register"){
+        const c=await createUserWithEmailAndPassword(auth,email,pass);
+        let profilePhotoURL="";
+        const pf=photoInput.files?.[0];
+        if(pf){if(!pf.type.startsWith("image/"))throw Error("केवल फोटो चुनें।");if(pf.size>5*1024*1024)throw Error("फोटो 5 MB से कम रखें।");profilePhotoURL=await imageToDataURL(pf,512,.65)}
+        await setDoc(doc(db,"users",c.user.uid),{uid:c.user.uid,name,email,mobile:"",language:"हिंदी",district:"",cityVillage:"",profilePhotoURL,profilePhotoData:profilePhotoURL,role:"user",registrationType:"email-password",createdAt:serverTimestamp()},{merge:true});
+        localStorage.setItem("parmatmaEk_registered","yes");localStorage.setItem("parmatmaEk_userDocId",c.user.uid);localStorage.setItem("parmatmaEk_userName",name);localStorage.setItem("parmatmaEk_userEmail",email);
+        show("🎉 Registration सफल! Account तैयार है।",true);setTimeout(hideGate,450);
+      }else{
+        const c=await signInWithEmailAndPassword(auth,email,pass);
+        localStorage.setItem("parmatmaEk_registered","yes");localStorage.setItem("parmatmaEk_userDocId",c.user.uid);localStorage.setItem("parmatmaEk_userEmail",email);
+        show("✅ Login सफल!",true);setTimeout(hideGate,300);
+      }
+    }catch(e){
+      console.error(e);let m=e?.code||"";let t=e?.message||"Firebase error";
+      if(m==="auth/email-already-in-use")t="यह Email पहले से Registered है। Login करें।";
+      else if(m==="auth/invalid-credential"||m==="auth/wrong-password"||m==="auth/user-not-found")t="Email या Password गलत है।";
+      else if(m==="auth/operation-not-allowed")t="Firebase Console में Email/Password Sign-in चालू करना जरूरी है।";
+      else if(m==="auth/weak-password")t="Password मजबूत रखें (कम से कम 6 अक्षर)।";
+      show("❌ "+t);
+    }finally{busy=false;action.disabled=false;action.textContent=mode==="register"?"✅ Registration करें":"🔑 Login करें";}
+  };
+  sw.onclick=()=>setMode(mode==="register"?"login":"register");
+  forgot.onclick=async()=>{const email=o.querySelector("#peaEmail").value.trim();if(!email)return show("पहले अपना Email लिखें।");try{await sendPasswordResetEmail(auth,email);show("📧 Password reset link आपके Email पर भेज दिया गया है।",true)}catch(e){show("❌ Reset Email नहीं भेजा गया: "+(e?.message||"Firebase error"))}};
+
+  // Before authentication, no app option is usable. One auth screen is reused; it never stacks.
+  // IMPORTANT: wait for Firebase's first auth-state callback before deciding whether Login is needed.
+  // इससे page खुलते समय 200-500ms के लिए Login popup flash नहीं होगा और persisted Login बेकार में नहीं टूटेगा।
+  // Do not globally block app clicks here. Individual feature handlers decide whether Login is required.
+  // This prevents a stale Firebase auth-state read from disabling the whole Home screen.
+
+  onAuthStateChanged(async u=>{
+    if(u && u.isAnonymous){try{await signOut(auth)}catch(e){}return;}
+    authStateKnown=true;
+    ready=true;
+    if(u){
+      hideGate();
+      localStorage.setItem("parmatmaEk_registered","yes");
+      localStorage.setItem("parmatmaEk_userDocId",u.uid);
+      if(u.email)localStorage.setItem("parmatmaEk_userEmail",u.email);
+    }else{
+      setTimeout(()=>{if(!auth.currentUser && authStateKnown)showGate()},2500);
+    }
+  });
+  // पुराने PIN/local-session flags को Login authority न बनाएं; Firebase Email/Password + persistent Auth ही source of truth है।
+  hideOldAuth();
+  // No setTimeout Login popup: Firebase persistence callback खुद final state तय करेगा।
+})();
+</script>
+
+
+
+<!-- V10 CLEAN AUTH + PROFILE PHOTO CONTROLLER -->
+<style>
+#parmatmaEmailAuth{z-index:999999!important}
+#pmProfilePhoto{cursor:pointer!important;pointer-events:auto!important;overflow:hidden!important}
+#pmProfilePhoto img{width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important;display:block!important}
+.peSmallAvatar,.pePostHead img,.peHero .peAvatar{object-fit:cover!important}
+</style>
+<script type="module" id="parmatma-v10-controller">
+(async function(){
+  const FB="https://www.gstatic.com/firebasejs/12.18.0/";
+  const [{initializeApp,getApps,getApp},{getAuth,onAuthStateChanged,setPersistence,browserLocalPersistence,signOut},{getFirestore,doc,getDoc}]=await Promise.all([
+    import(FB+"firebase-app.js"),import(FB+"firebase-auth.js"),import(FB+"firebase-firestore.js")
+  ]);
+  const config={apiKey:"AIzaSyCOWrCyxMdLoevvOPyuXL6V3DP0mMfo5fU",authDomain:"parmatma-ek-e561d.firebaseapp.com",projectId:"parmatma-ek-e561d",storageBucket:"parmatma-ek-e561d.firebasestorage.app",messagingSenderId:"477168010558",appId:"1:477168010558:web:ae27b57110a6fc1ff1586f",measurementId:"G-CJTPB27P1B"};
+  const app=getApps().length?getApp():initializeApp(config);
+  const auth=getAuth(app),db=getFirestore(app);
+  try{await setPersistence(auth,browserLocalPersistence)}catch(e){console.warn("persistence",e)}
+  const fallback="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><rect width="100%" height="100%" fill="#e9eef5"/><circle cx="80" cy="56" r="31" fill="#1976d2"/><path d="M28 150c7-42 97-42 104 0" fill="#1976d2"/></svg>');
+  let known=false;
+  function setPhoto(url){
+    const src=url||"";
+    const top=document.getElementById("pmProfilePhoto");
+    if(top){top.innerHTML="";if(src){const im=document.createElement("img");im.src=src;im.alt="Profile";im.onerror=()=>{top.textContent="👤"};top.appendChild(im)}else top.textContent="👤";}
+    document.querySelectorAll(".pePostHead img,.peSmallAvatar").forEach(im=>{if(im.dataset.profileUid && src) im.src=src});
+  }
+  async function sync(u){
+    if(!u||u.isAnonymous)return;
+    try{
+      const s=await getDoc(doc(db,"users",u.uid));
+      if(s.exists()){
+        const p=s.data()||{};
+        window.__parmatmaCurrentProfile={uid:u.uid,...p};
+        setPhoto(p.profilePhotoURL||p.profilePhotoData||"");
+        window.dispatchEvent(new CustomEvent("parmatmaProfileUpdated",{detail:p}));
+      }
+    }catch(e){console.warn("profile sync",e)}
+  }
+  function hideOld(){
+    ["parmatmaAppGate","pinAuthOverlay","registrationScreen"].forEach(id=>{const x=document.getElementById(id);if(x)x.style.display="none"});
+  }
+  function showOnlyEmail(){
+    hideOld();
+    const x=document.getElementById("parmatmaEmailAuth");
+    if(x)x.style.display="flex";
+  }
+  function hideEmail(){
+    const x=document.getElementById("parmatmaEmailAuth");if(x)x.style.display="none";
+  }
+
+  onAuthStateChanged(auth,async u=>{
+    if(u && u.isAnonymous){try{await signOut(auth)}catch(e){};return}
+    known=true;
+    if(u){
+      localStorage.setItem("parmatmaEk_registered","yes");
+      localStorage.setItem("parmatmaEk_userDocId",u.uid);
+      if(u.email)localStorage.setItem("parmatmaEk_userEmail",u.email);
+      hideEmail();hideOld();await sync(u);
+    }else setTimeout(()=>{if(!auth.currentUser && known)showOnlyEmail()},2500);
+  });
+
+  // Any unauthenticated interaction opens ONE existing email-auth screen, never another popup.
+  // No global click blocker: the feature router below handles authentication per feature.
+  // Keeping the Home screen clickable also avoids stale-auth races.
+
+  // Profile icon: always uses the authenticated Firebase user and opens the existing profile screen.
+  document.addEventListener("click",e=>{
+    const b=e.target.closest("#pmProfilePhoto");if(!b)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    if(window.parmatmaOpenProfileV11){window.parmatmaOpenProfileV11();return}
+    const u=auth.currentUser;
+    if(!u||u.isAnonymous){showOnlyEmail();return}
+    if(window.parmatmaV2?.openProfile) window.parmatmaV2.openProfile();
+  },true);
+
+  // Keep photo visible after dynamic UI renders.
+  window.addEventListener("parmatmaProfileUpdated",ev=>{
+    const p=ev.detail||{};setPhoto(p.profilePhotoURL||p.profilePhotoData||"");
+  });
+  if(auth.currentUser&&!auth.currentUser.isAnonymous) await sync(auth.currentUser);
+})();
+</script>
+
+
+<!-- V11 FINAL PROFILE + AUTH READY CONTROLLER -->
+<style>
+#peV11Profile{position:fixed;inset:0;z-index:12000000;display:none;background:#f5f7fb;overflow:auto;font-family:Arial,"Noto Sans Devanagari",sans-serif}
+#peV11Profile .v11head{position:sticky;top:0;z-index:2;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px}
+#peV11Profile .v11back{width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:30px}
+#peV11Profile .v11wrap{max-width:620px;margin:auto;padding:16px 14px 50px}
+#peV11Profile .v11card{background:#fff;border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+#peV11Profile .v11hero{text-align:center;background:linear-gradient(135deg,#ed0f8c,#5c42ff,#00a9ee);color:#fff;border-radius:24px;padding:24px 18px}
+#peV11Profile .v11avatar{width:112px;height:112px;border-radius:50%;object-fit:cover;background:#e9eef5;border:4px solid #fff;box-shadow:0 5px 18px rgba(0,0,0,.18)}
+#peV11Profile .v11name{font-size:25px;font-weight:900;margin-top:10px}
+#peV11Profile .v11input{width:100%;border:1px solid #ddd;border-radius:13px;padding:13px;font-size:17px;margin-top:7px;outline:none}
+#peV11Profile .v11label{display:block;font-weight:800;margin-top:12px}
+#peV11Profile .v11btn{width:100%;border:0;border-radius:14px;padding:14px;font-size:17px;font-weight:900;margin-top:13px}
+#peV11Profile .v11save{background:#4caf50;color:#fff}
+#peV11Profile .v11edit{background:#ff5722;color:#fff}
+#peV11Profile .v11msg{min-height:24px;text-align:center;font-weight:800;margin-top:10px;line-height:1.45}
+#peV11Profile .v11pick{text-align:center;border:1.5px dashed #cbbbe9;border-radius:15px;padding:12px;background:#faf8ff;margin-top:10px}
+#peV11Profile .v11pick input{width:100%;padding:8px}
+</style>
+<script type="module" id="parmatma-v11-profile-controller">
+(async function(){
+  const FB="https://www.gstatic.com/firebasejs/12.18.0/";
+  const [{initializeApp,getApps,getApp},{getAuth,onAuthStateChanged,setPersistence,browserLocalPersistence},{getFirestore,doc,getDoc,setDoc,serverTimestamp}]=await Promise.all([
+    import(FB+"firebase-app.js"),import(FB+"firebase-auth.js"),import(FB+"firebase-firestore.js")
+  ]);
+  const config={apiKey:"AIzaSyCOWrCyxMdLoevvOPyuXL6V3DP0mMfo5fU",authDomain:"parmatma-ek-e561d.firebaseapp.com",projectId:"parmatma-ek-e561d",storageBucket:"parmatma-ek-e561d.firebasestorage.app",messagingSenderId:"477168010558",appId:"1:477168010558:web:ae27b57110a6fc1ff1586f",measurementId:"G-CJTPB27P1B"};
+  const app=getApps().length?getApp():initializeApp(config),auth=getAuth(app),db=getFirestore(app);
+  try{await setPersistence(auth,browserLocalPersistence)}catch(e){}
+  let authReady=false, current=null;
+  const fallback="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><rect width="100%" height="100%" fill="#e9eef5"/><circle cx="80" cy="56" r="31" fill="#1976d2"/><path d="M28 150c7-42 97-42 104 0" fill="#1976d2"/></svg>');
+  const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  async function waitAuth(){
+    if(auth.currentUser && !auth.currentUser.isAnonymous){current=auth.currentUser;return current}
+    return await new Promise((resolve,reject)=>{
+      let done=false;
+      const unsub=onAuthStateChanged(auth,u=>{
+        if(u&&!u.isAnonymous){done=true;unsub();current=u;resolve(u)}
+        else if(!u&&!done){setTimeout(()=>{if(!done){done=true;unsub();reject(new Error("LOGIN_REQUIRED"))}},12000)}
+      });
+    });
+  }
+  async function getProfile(u){
+    const s=await getDoc(doc(db,"users",u.uid));
+    if(s.exists())return {id:s.id,...s.data()};
+    return {uid:u.uid,name:u.displayName||"",email:u.email||"",mobile:"",language:"हिंदी",district:"",cityVillage:"",profilePhotoURL:"",profilePhotoData:"",role:"user"};
+  }
+  function setTop(url){
+    const top=document.getElementById("pmProfilePhoto");if(!top)return;
+    top.innerHTML="";
+    if(url){const im=document.createElement("img");im.src=url;im.alt="Profile";im.onerror=()=>{top.textContent="👤"};top.appendChild(im)}
+    else top.textContent="👤";
+  }
+  function close(){const p=document.getElementById("peV11Profile");if(p)p.style.display="none";document.body.style.overflow=""}
+  function make(){
+    let p=document.getElementById("peV11Profile"); if(p)return p;
+    p=document.createElement("div");p.id="peV11Profile";document.body.appendChild(p);return p;
+  }
+  async function open(){
+    let u;try{u=await waitAuth()}catch(e){if(window.parmatmaEmailLogin)window.parmatmaEmailLogin();return}
+    const prof=await getProfile(u),p=make();
+    p.innerHTML='<div class="v11head"><button class="v11back" type="button">‹</button><div style="font-size:22px;font-weight:900">👤 मेरा प्रोफाइल</div></div><div class="v11wrap"><div class="v11hero"><img class="v11avatar" id="v11avatar" src="'+esc(prof.profilePhotoURL||prof.profilePhotoData||fallback)+'"><div class="v11name">'+esc(prof.name||"मेरा प्रोफाइल")+'</div><div style="margin-top:6px;font-weight:800">'+(prof.role==="margdarshak"?"👑 मार्गदर्शक":prof.role==="sevak"?"👥 सेवक":prof.role==="admin"?"🛡️ Admin":"👤 सदस्य")+'</div></div><div class="v11card"><button class="v11btn v11edit" id="v11edit">✏️ Edit Profile / फोटो बदलें</button><div id="v11info" style="margin-top:15px;line-height:1.9"><b>📧 Email:</b> '+esc(prof.email||u.email||"—")+'<br><b>📱 मोबाइल:</b> '+esc(prof.mobile||"—")+'<br><b>🌐 भाषा:</b> '+esc(prof.language||"—")+'<br><b>📍 जिला:</b> '+esc(prof.district||"—")+'<br><b>🏠 शहर/गाँव:</b> '+esc(prof.cityVillage||"—")+'</div></div></div>';
+    document.body.style.overflow="hidden";p.style.display="block";
+    p.querySelector(".v11back").onclick=close;
+    p.querySelector("#v11edit").onclick=()=>edit(u,prof);
+    setTop(prof.profilePhotoURL||prof.profilePhotoData||"");
+  }
+  function compress(file){
+    return new Promise((resolve,reject)=>{
+      const im=new Image(),fr=new FileReader();fr.onload=()=>{im.onload=()=>{const max=900,sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));const x=c.getContext("2d");x.drawImage(im,0,0,c.width,c.height);c.toBlob(b=>b?resolve(b):reject(new Error("फोटो तैयार नहीं हुई")),"image/jpeg",.82)};im.onerror=()=>reject(new Error("फोटो पढ़ी नहीं गई"));im.src=fr.result};fr.onerror=reject;fr.readAsDataURL(file)
+    })
+  }
+  async function imageToDataURLV11(file,max=512,quality=.65){const b=await compressToBlobV11(file,max,quality);if(b.size>700000)throw new Error("फोटो बहुत बड़ी है। छोटी फोटो चुनें।");return await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(b)})}
+  function compressToBlobV11(file,max,quality){return new Promise((resolve,reject)=>{const im=new Image(),fr=new FileReader();fr.onload=()=>{im.onload=()=>{const sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));const x=c.getContext("2d");x.drawImage(im,0,0,c.width,c.height);c.toBlob(b=>b?resolve(b):reject(new Error("फोटो तैयार नहीं हुई")),"image/jpeg",quality)};im.onerror=()=>reject(new Error("फोटो पढ़ी नहीं गई"));im.src=fr.result};fr.onerror=reject;fr.readAsDataURL(file)})}
+  function edit(u,prof){
+    const p=document.getElementById("peV11Profile"),old=prof.profilePhotoURL||prof.profilePhotoData||fallback;
+    p.querySelector(".v11wrap").innerHTML='<div class="v11card"><div style="text-align:center"><img class="v11avatar" id="v11editAvatar" src="'+esc(old)+'"></div><div class="v11pick">📷 नया Profile Photo चुनें<input id="v11photo" type="file" accept="image/*"></div><label class="v11label">पूरा नाम<input class="v11input" id="v11name" value="'+esc(prof.name||"")+'"></label><label class="v11label">मोबाइल नंबर<input class="v11input" id="v11mobile" inputmode="numeric" maxlength="10" value="'+esc(prof.mobile||"")+'"></label><label class="v11label">भाषा<select class="v11input" id="v11lang"><option '+(prof.language==="हिंदी"?"selected":"")+'>हिंदी</option><option '+(prof.language==="मराठी"?"selected":"")+'>मराठी</option></select></label><label class="v11label">जिला<input class="v11input" id="v11district" value="'+esc(prof.district||"")+'"></label><label class="v11label">शहर / गाँव<input class="v11input" id="v11city" value="'+esc(prof.cityVillage||"")+'"></label><div id="v11msg" class="v11msg"></div><button class="v11btn v11save" id="v11save">💾 प्रोफाइल सेव करें</button></div>';
+    const fi=p.querySelector("#v11photo"),prev=p.querySelector("#v11editAvatar");
+    fi.onchange=()=>{const f=fi.files?.[0];if(!f)return;if(!f.type.startsWith("image/")||f.size>5*1024*1024){p.querySelector("#v11msg").textContent="❌ फोटो JPG/PNG और 5 MB से कम रखें।";fi.value="";return}const r=new FileReader();r.onload=e=>prev.src=e.target.result;r.readAsDataURL(f)};
+    p.querySelector("#v11save").onclick=async()=>{
+      const btn=p.querySelector("#v11save"),msg=p.querySelector("#v11msg");btn.disabled=true;btn.textContent="⏳ फोटो/प्रोफाइल सेव हो रहा है...";msg.textContent="";
+      try{
+        let url=prof.profilePhotoURL||prof.profilePhotoData||"";
+        const f=fi.files?.[0];
+        if(f){url=await imageToDataURLV11(f,512,.65)}
+        const data={uid:u.uid,email:u.email||prof.email||"",name:p.querySelector("#v11name").value.trim(),mobile:p.querySelector("#v11mobile").value.trim(),language:p.querySelector("#v11lang").value,district:p.querySelector("#v11district").value.trim(),cityVillage:p.querySelector("#v11city").value.trim(),profilePhotoURL:url,profilePhotoData:url,updatedAt:serverTimestamp()};
+        await setDoc(doc(db,"users",u.uid),data,{merge:true});
+        current={...prof,...data};setTop(url);window.dispatchEvent(new CustomEvent("parmatmaProfileUpdated",{detail:current}));
+        btn.textContent="✅ सेव हो गया";msg.style.color="#16803a";msg.textContent="✅ प्रोफाइल और फोटो Firebase में सेव हो गया (Storage की जरूरत नहीं)।";
+        setTimeout(()=>open(),450);
+      }catch(e){console.error(e);btn.disabled=false;btn.textContent="💾 प्रोफाइल सेव करें";msg.style.color="#b3261e";msg.textContent="❌ सेव नहीं हुआ: "+(e?.message||"Firebase error")}
+    };
+  }
+  window.parmatmaOpenProfileV11=open;
+  onAuthStateChanged(auth,u=>{authReady=true;if(u&&!u.isAnonymous){current=u;getProfile(u).then(p=>setTop(p.profilePhotoURL||p.profilePhotoData||"")).catch(()=>{})}else if(!u){setTop("")}});
+  // Capture profile icon before legacy handlers; this is the only profile editor used by V11.
+  document.addEventListener("click",e=>{
+    const b=e.target.closest&&e.target.closest("#pmProfilePhoto");if(!b)return;
+    e.preventDefault();e.stopImmediatePropagation();open();
+  },true);
+  if(auth.currentUser&&!auth.currentUser.isAnonymous){try{const p=await getProfile(auth.currentUser);setTop(p.profilePhotoURL||p.profilePhotoData||"")}catch(e){}}
+})();
+</script>
+
+
+<script type="module" id="parmatma-auth-refresh-stabilizer">
+(async function(){
+  const FB="https://www.gstatic.com/firebasejs/12.18.0/";
+  const [{initializeApp,getApps,getApp},{getAuth,onAuthStateChanged,setPersistence,browserLocalPersistence}]=await Promise.all([
+    import(FB+"firebase-app.js"),import(FB+"firebase-auth.js")
+  ]);
+  const config={apiKey:"AIzaSyCOWrCyxMdLoevvOPyuXL6V3DP0mMfo5fU",authDomain:"parmatma-ek-e561d.firebaseapp.com",projectId:"parmatma-ek-e561d",storageBucket:"parmatma-ek-e561d.firebasestorage.app",messagingSenderId:"477168010558",appId:"1:477168010558:web:ae27b57110a6fc1ff1586f",measurementId:"G-CJTPB27P1B"};
+  const app=getApps().length?getApp():initializeApp(config);
+  const auth=getAuth(app);
+  try{await setPersistence(auth,browserLocalPersistence)}catch(e){}
+  let settled=false;
+  const hide=()=>{["parmatmaEmailAuth","parmatmaAppGate","pinAuthOverlay","registrationScreen","peV2Root"].forEach(id=>{const x=document.getElementById(id);if(x && id!=="peV2Root")x.style.display="none";});};
+  onAuthStateChanged(auth,u=>{
+    settled=true;
+    if(u && !u.isAnonymous){hide();localStorage.setItem("parmatmaEk_registered","yes");localStorage.setItem("parmatmaEk_userDocId",u.uid);if(u.email)localStorage.setItem("parmatmaEk_userEmail",u.email);}
+  });
+  // Give Firebase Auth enough time to restore its persistent session before any login UI is allowed to remain.
+  setTimeout(()=>{if(auth.currentUser && !auth.currentUser.isAnonymous)hide();},3000);
+})();
+</script>
+<script type="module" id="parmatma-auth-first-visit-controller">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+const cfg={apiKey:"AIzaSyCOWrCyxMdLoevvOPyuXL6V3DP0mMfo5fU",authDomain:"parmatma-ek-e561d.firebaseapp.com",projectId:"parmatma-ek-e561d",storageBucket:"parmatma-ek-e561d.firebasestorage.app",messagingSenderId:"477168010558",appId:"1:477168010558:web:ae27b57110a6fc1ff1586f",measurementId:"G-CJTPB27P1B"};
+const app=getApps().length?getApp():initializeApp(cfg); const auth=getAuth(app);
+try{await setPersistence(auth,browserLocalPersistence)}catch(e){}
+let firstTimer;
+onAuthStateChanged(auth,user=>{
+  clearTimeout(firstTimer);
+  if(user && !user.isAnonymous){
+    localStorage.setItem('parmatmaEverRegistered','1');
+    ['parmatmaEmailAuth','parmatmaAppGate','pinAuthOverlay','registrationScreen'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none'});
+    return;
+  }
+  const ever=localStorage.getItem('parmatmaEverRegistered')==='1' || localStorage.getItem('parmatmaEk_registered')==='yes';
+  firstTimer=setTimeout(()=>{
+    if(auth.currentUser && !auth.currentUser.isAnonymous)return;
+    if(!ever){
+      // बिल्कुल पहली बार: Email Registration पहले खुलेगा। उसी स्क्रीन पर Login बटन मौजूद है।
+      if(window.parmatmaEmailRegister) window.parmatmaEmailRegister();
+    } else {
+      // Registered user के लिए Firebase session restore होने तक कोई Login popup/flash नहीं।
+      // Session restore हो जाने पर ऊपर वाला authenticated branch खुद Main Menu खुला रखेगा।
+      // अगर Firebase session वास्तव में समाप्त है, user Login button से स्वयं Login कर सकता है।
+      const x=document.getElementById('parmatmaEmailAuth'); if(x)x.style.display='none';
+    }
+  },!ever?350:3200);
+});
+</script>
+
+<!-- Refresh guard: block common keyboard refresh shortcuts. The Android/WebView host must disable its own refresh button/gesture. -->
+<script>
+(function(){
+  try{
+    document.addEventListener('keydown',function(e){
+      const k=(e.key||'').toLowerCase();
+      if(k==='f5'||((e.ctrlKey||e.metaKey)&&k==='r')){e.preventDefault();e.stopPropagation();return false;}
+    },true);
+    document.addEventListener('contextmenu',function(e){e.preventDefault();},true);
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
